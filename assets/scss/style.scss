@@ -140,7 +140,7 @@ body > header {
 
 div#content {
 
-  @include grid-row();
+  @include grid-row;
 
   @media #{$screen} {
     section { @include grid-column(12); }
@@ -161,9 +161,26 @@ div#content {
   }
 
   section#leftColumn {
+
+    & > div {
+      @include grid-row(nest);
+
+      @media #{$screen} {
+        & > div {
+          @include grid-column(6);
+        }
+      }
+
+      @media #{$small} {
+        & > div {
+          @include grid-column(12);
+        }
+      }
+    }
+
     & > img {
-      width: 100%;
       margin-bottom: 1em;
+      width: 100%;
     }
     & > nav {
 

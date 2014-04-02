@@ -1568,9 +1568,34 @@ div#content {
       float: left; } }
   div#content section {
     padding-bottom: 1em; }
+  div#content section#leftColumn > div {
+    width: auto;
+    margin-left: -0.9375rem;
+    margin-right: -0.9375rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    max-width: none;
+    *zoom: 1; }
+    div#content section#leftColumn > div:before, div#content section#leftColumn > div:after {
+      content: " ";
+      display: table; }
+    div#content section#leftColumn > div:after {
+      clear: both; }
+    @media only screen {
+      div#content section#leftColumn > div > div {
+        padding-left: 0.9375rem;
+        padding-right: 0.9375rem;
+        width: 50%;
+        float: left; } }
+    @media only screen and (min-width: 40.063em) {
+      div#content section#leftColumn > div > div {
+        padding-left: 0.9375rem;
+        padding-right: 0.9375rem;
+        width: 100%;
+        float: left; } }
   div#content section#leftColumn > img {
-    width: 100%;
-    margin-bottom: 1em; }
+    margin-bottom: 1em;
+    width: 100%; }
   div#content section#leftColumn > nav ul {
     list-style-type: none;
     padding: 0;
