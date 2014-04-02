@@ -1,0 +1,4 @@
+name: Andrea Venuta
+markdown: redcarpet
+pygments: true
+exclude: [Gruntfile.js, package.json, node_modules, assets]

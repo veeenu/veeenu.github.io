@@ -1,0 +1,57 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Andrea Venuta | {{ page.title }}
+    link(rel='stylesheet',href='http://fonts.googleapis.com/css?family=Ubuntu+Mono|Lato:300,700',type='text/css')
+    link(rel='stylesheet',href='/css/style.css',type='text/css')
+    link(rel='stylesheet',href='/css/syntax.css',type='text/css')
+  body
+    header
+      h1 Andrea Venuta
+      nav
+        ul
+          li
+            a(href='/') Home
+          li
+            a(href='/blog.html') Blog
+          li
+            a(href='/#experience') Skills
+          li
+            a(href='/#portfolio') Portfolio
+    div#content
+      section#leftColumn
+        img(src='/me.jpg',alt='Andrea Venuta')
+        h3 I'm a Web front-end engineer, developer, designer and graphics programmer.
+        p
+          | Offering consulting services on web development, graphics programming
+          | and related technologies: HTML5, CSS3, Javascript, WebGL, GLSL, SVG, Canvas 2D,
+          | game engine development, 3D modeling and rendering.
+        h3 Personal info and contacts
+        nav
+          ul
+            li
+              | Mobile:
+              | +39 339 4971144
+            li
+              | Web:
+              | 
+              a(href='http://veeenu.github.io') http://veeenu.github.io
+            li
+              | E-Mail:
+              | 
+              a(href='mailto:venutawebdesign@gmail.com') venutawebdesign@gmail.com
+            li
+              | Twitter:
+              | 
+              a(href='http://twitter.com/veeeeenu') http://twitter.com/veeeeenu
+            li
+              | GitHub:
+              | 
+              a(href='http://github.com/veeenu') http://github.com/veeenu
+            li
+              | Download my
+              | 
+              a(href='http://veeenu.github.io/cv.pdf') R&eacute;sum&eacute;
+      section#rightColumn
+        | {{ content }}
