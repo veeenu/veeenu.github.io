@@ -24,23 +24,28 @@ $colorFG: rgba(238, 238, 238, 0.5);
 $colorBGFull: rgba(51, 51, 51, 1);
 $colorFGFull: rgba(238, 238, 238, 1);
 
-$body-bg: $colorBGFull;
-$body-font-color: $colorFGFull;
-$body-font-family: $fontSans;
-$body-font-weight: 300;
-
 $primary-color: $color-p1;
 $secondary-color: $color-sA1;
 
 @import "normalize";
-@import "foundation/settings";
-@import "foundation/components/global";
-@import "foundation/components/grid";
+@import "grid";
+
+$total-width: 100%;
+
+$screen: "only screen";
+$xsmall: "only screen and (min-width: 480px)";
+$small: "only screen and (min-width: 768px)";
 
 body {
   font-size: 0.85em;
   line-height: 1.5em;
   text-align: justify;
+  color: $colorFGFull;
+  font-family: $fontSans;
+  font-weight: 300;
+  background-color: $colorBGFull;
+  padding: 1em;
+  box-sizing: border-box;
 }
 
 a {
@@ -100,24 +105,43 @@ table {
 }
 
 body > header {
-  @include grid-row(true);
+  //@include grid-row(true);
+  @include row;
   margin-bottom: 1em;
 
   h1 {
-    @include grid-column(12);
+    //@include grid-column(12);
+    @include column(12);
+    a, a:hover { color: $colorFGFull; }
   }
   nav {
 
-    @include grid-column($columns: 6, $offset: 6);
+    //@include grid-column($columns: 6, $offset: 6);
+
+    @media #{$screen} {
+      & { 
+        padding-top: 1em;
+        @include column(12);
+      }
+    }
+    @media #{$xsmall} {
+      & { 
+        padding-top: 0;
+        @include column(6);
+        @include push(6); 
+      }
+    }
 
     ul {
       list-style-type: none;
       padding: 0;
       margin: 0;
-      @include grid-row;
+      //@include grid-row;
+      @include row(12);
 
       li {
-        @include grid-column(3);
+        //@include grid-column(3);
+        @include column(3,12);
         height: 2em;
         line-height: 2em;
         padding: 0;
@@ -140,19 +164,23 @@ body > header {
 
 div#content {
 
-  @include grid-row;
+  //@include grid-row;
+  @include row;
 
   @media #{$screen} {
-    section { @include grid-column(12); }
+    //section { @include grid-column(12); }
+    section { @include column(12); }
   }
 
   @media #{$small} {
     section {
-      @include grid-column(4);
+      //@include grid-column(4);
+      @include column(4);
     }
 
     section + section {
-      @include grid-column(8);
+      //@include grid-column(8);
+      @include column(8);
     }
   }
 
@@ -163,17 +191,35 @@ div#content {
   section#leftColumn {
 
     & > div {
-      @include grid-row(nest);
+      //@include grid-row(nest);
 
       @media #{$screen} {
+        & { 
+          @include row(12);
+        }
         & > div {
-          @include grid-column(6);
+          //@include grid-column(6);
+          @include column(12,12);
+        }
+      }
+
+      @media #{$xsmall} {
+        & { 
+          @include row(12);
+        }
+        & > div {
+          //@include grid-column(6);
+          @include column(6,12);
         }
       }
 
       @media #{$small} {
+        & {
+          @include row(4);
+        }
         & > div {
-          @include grid-column(12);
+          //@include grid-column(12);
+          @include column(4,4);
         }
       }
     }
@@ -212,13 +258,51 @@ body > footer {
 div#experience {
 
   & > div {
-    @include grid-row(nest);
+    //@include grid-row(nest);
+    @include row(8);
     margin-bottom: 1em;
 
     & > div {
-      @include grid-column(6);
+      //@include grid-column(6);
+
+      @media #{$screen} {
+        & {
+          @include column(8,8);
+        }
+      }
+      @media #{$xsmall} {
+        & {
+          @include column(4,8);
+        }
+      }
     }
   }
 
 }
 
+ul#posts {
+  @include row(8);
+
+  & > li {
+    @include column(2, 8);
+    height: 3em;
+    padding: 0.5em;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+    text-align: center;
+    box-shadow: inset 0px 0px 0.5em transparent;
+    &:hover {
+      border-color: $colorFG;
+      box-shadow: inset 0px 0px 0.5em rgba(128, 128, 128, 0.5);
+    }
+    a {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    small {
+      color: $colorFGFull;
+    }
+  }
+}

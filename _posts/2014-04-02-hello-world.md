@@ -35,7 +35,7 @@ studying graphics programming.
 
 At the time of writing this, I don't have any production
 code ready yet, but I've been working on a couple of
-very interesting projects with GWC (an SVG-base map drawing
+very interesting projects with GWC (an SVG-based map drawing
 system) and Interfase (an ambient intelligence software
 prototype, featuring motion detection). Besides that, I've
 been working on a couple of trivial 3D projects, namely
