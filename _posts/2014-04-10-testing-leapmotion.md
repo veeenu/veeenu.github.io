@@ -3,10 +3,7 @@ layout: post
 title: 'A little fun with LeapMotion'
 date: 2014-04-10 17:20
 ---
-I recently bought a [LeapMotion](https://www.leapmotion.com/). It's a great
-little tool, although interacting with it has somewhat of a learning curve.
-The API on the other hand has quite a beautiful design, is very well
-documented and a couple of minutes of reading are enough to get started.
+I recently bought a [LeapMotion](https://www.leapmotion.com/). It's a great little tool, although interacting with it has somewhat of a learning curve. The API on the other hand has quite a beautiful design, is very well documented and a couple of minutes of reading are enough to get started.
 
 I'll have to take an exam about neural networks this summer, so later on
 I'll begin working on a neural network based gesture recognition system and
