@@ -74,7 +74,7 @@ Okay, let's get to it!
 We will use [Blender](http://www.blender.org/) for this purpose. At the time
 of writing, version 2.70a is out. We will create a complete, usable (albeit 
 very minimal) model of a barb-like thingamabob that bends itself towards the
-ground. The screenshots are [downloadable](#) in a higher resolution along
+ground. The screenshots are [downloadable](/data/2014-04-22-implementing-keyframe-animation/veeenu-implementing-keyframe-animation.tgz) in a higher resolution along
 with the rest of the code and the *.blend* file.
 
 ![Step 01](/data/2014-04-22-implementing-keyframe-animation/steps/01.png)
