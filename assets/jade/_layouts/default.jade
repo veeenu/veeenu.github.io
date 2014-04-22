@@ -10,9 +10,9 @@ html
     meta(property='og:description',content='{{ page.excerpt | strip_html | strip_newlines | truncate:300 }}')
     | {% endif %}
     title Andrea Venuta {% if page.title %}| {{ page.title }}{% endif %}
-    link(rel='stylesheet',href='http://fonts.googleapis.com/css?family=Ubuntu+Mono|Lato:300,700',type='text/css')
     link(rel='stylesheet',href='/css/style.css',type='text/css')
     link(rel='stylesheet',href='/css/syntax.css',type='text/css')
+    link(rel='stylesheet',href='http://fonts.googleapis.com/css?family=Ubuntu+Mono|Lato:300,700',type='text/css')
   body
     header
       h1
