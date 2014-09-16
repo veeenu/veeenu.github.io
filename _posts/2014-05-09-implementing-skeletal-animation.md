@@ -28,7 +28,7 @@ Each joint is connected to zero or more vertices of a mesh in a process called *
 
 To transform a vertex, we need an affine transformation matrix which will tell us how and by how much the vertex is being transformed. This matrix is the result of the sum of all the positions and rotations of all the joints that influence the vertex. So for each vertex V:
 
-__V' = &sum;<sub>i = 0..n</sub> W<sub>i</sub> * M<sub>i</sub> * V__
+$$ V' = \sum_{i=0}^n W_i M_i V $$
 
 Where W<sub>i</sub> is the weight of V against the *i*-th joint, M<sub>i</sub> is the transform matrix of the joint and n the number of joints.
 
@@ -60,12 +60,14 @@ This works flawlessly if we make sure no children is evaluated before its parent
 
 Let's consider the resting pose of our model. When the model is totally at rest, no transform is applied to the vertices; this means that the rest configuration of the skeleton should provide the shader a number of identity matrices.
 
-<pre>
-1 0 0 0
-0 1 0 0
-0 0 1 0
-0 0 0 1
-</pre>
+$$
+\begin{vmatrix}
+  1 & 0 & 0 & 0 \\
+  0 & 1 & 0 & 0 \\
+  0 & 0 & 1 & 0 \\
+  0 & 0 & 0 & 1 \\
+\end{vmatrix}
+$$
 
 But, recall, we said that each bone is specified by a position and a rotation, and we calculated these in the form of a world matrix which almost certainly won't be the identity - won't these transform our vertices even in the rest pose?
 
@@ -88,15 +90,16 @@ for(bone in bones) {
 
 So let's apply the transformation formula to the vertices in our rest pose (or *bind pose*):
 
-__V' = &sum;<sub>i = 0..n</sub> W<sub>i</sub> * M<sup>-1</sup><sub>i</sub> * M<sub>i</sub> * V__
+$$ V' = \sum_{i=0}^n W_i M_i^{-1} M_i V $$
 
 becomes
 
-__V' = &sum;<sub>i = 0..n</sub> W<sub>i</sub> * I<sub>4</sub> * V__
+$$ V' = \sum_{i=0}^n W_i I_4 V $$
 
 But we know the W<sub>i</sub>s should add up to 1, so we get
 
-__V' = 1 * I<sub>4</sub> * V = V__
+$$ V' = 1 I_4 V = V $$
+
 
 Like we wanted, no transformations applied. We could say the inverse bindpose matrix brings each vertex in *joint space*, allowing then the bone's world transformation to "make sense". In fact, in the rest pose each bone transformation matrix makes sense if it doesn't move a vertex. During the animation it will make sense if it moves the vertex from the bind pose to the desired position.
 

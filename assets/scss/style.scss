@@ -34,7 +34,9 @@ $total-width: 100%;
 
 $screen: "only screen";
 $xsmall: "only screen and (min-width: 480px)";
-$small: "only screen and (min-width: 768px)";
+$small:  "only screen and (min-width: 768px)";
+$medium: "only screen and (min-width: 1281px)";
+$large:  "only screen and (min-width: 1600px)";
 
 body {
   font-size: 0.85em;
@@ -113,6 +115,14 @@ body > header {
   @include row;
   margin-bottom: 1em;
 
+  @media #{$large} {
+  
+    width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+
+  }
+
   h1 {
     //@include grid-column(12);
     @include column(12);
@@ -188,6 +198,25 @@ div#content {
     }
   }
 
+  @media #{$medium} {
+    section {
+      //@include grid-column(4);
+      @include column(2);
+    }
+
+    section + section {
+      //@include grid-column(8);
+      @include column(10);
+    }
+  }
+
+  @media #{$large} {
+  
+    width: 1600px;
+    margin: auto;
+
+  }
+
   section {
     padding-bottom: 1em;
   }
@@ -226,6 +255,20 @@ div#content {
           @include column(4,4);
         }
       }
+
+      @media #{$medium} {
+        & {
+          @include row(2);
+        }
+        & > div {
+          //@include grid-column(12);
+          @include column(2,2);
+        }
+      }
+
+      & > div + div {
+        text-align: right;
+      }
     }
 
     & > img {
@@ -258,6 +301,9 @@ div#content {
         max-width: 100%;
         display: block;
         margin: 2em auto;
+      }
+      ul {
+        margin-bottom: .5em;
       }
     }
 
@@ -299,7 +345,7 @@ ul#posts {
   width: 100%;
 
   & > li {
-    @media #{$screen} {
+    /*@media #{$screen} {
       & {
         @include column(4,8);
       }
@@ -308,18 +354,21 @@ ul#posts {
       & {
         @include column(2,8);
       }
-    }
+    }*/
+    @include column(12, 12);
     box-sizing: border-box;
     //height: 3em;
     padding: 0.5em;
-    border-radius: 3px;
+    //border-radius: 3px;
     border: 1px solid transparent;
+    border-bottom: 1px solid $colorFG;
     transition: all 0.3s;
-    text-align: center;
+    text-align: left;
     box-shadow: inset 0px 0px 0.5em transparent;
     &:hover {
-      border-color: $colorFG;
-      box-shadow: inset 0px 0px 0.5em rgba(128, 128, 128, 0.5);
+      //border-color: $colorFG;
+      //box-shadow: inset 0px 0px 0.5em rgba(128, 128, 128, 0.5);
+      background-color: rgba(128, 128, 128, 0.3);
     }
     a {
       display: block;
