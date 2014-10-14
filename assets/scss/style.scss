@@ -68,6 +68,7 @@ a:hover {
 h2, h3 {
   margin-top: 0;
   border-bottom: 1px solid $color-p4;
+  clear: both;
   small { 
     float: right; 
     font-weight: 300;
@@ -141,8 +142,8 @@ body > header {
     @media #{$xsmall} {
       & { 
         padding-top: 0;
-        @include column(6);
-        @include push(6); 
+        @include column(3);
+        @include push(9); 
       }
     }
 
@@ -155,7 +156,7 @@ body > header {
 
       li {
         //@include grid-column(3);
-        @include column(3,12);
+        @include column(6,12);
         height: 2em;
         line-height: 2em;
         padding: 0;
@@ -332,6 +333,30 @@ div#experience {
       @media #{$xsmall} {
         & {
           @include column(4,8);
+        }
+      }
+
+      & > ul.cloud {
+        list-style-type: none;
+        position: relative;
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 1rem;
+
+        & > li {
+          display: inline-block;
+          margin: .25rem;
+          border: 1px solid $color-p1;
+          border-radius: 1.5rem;
+          background: $color-p3;
+          padding: .25rem .75rem;
+          cursor: pointer;
+
+          transition: background-color .3s;
+          &:hover {
+            background: $color-p2;
+          }
         }
       }
     }
