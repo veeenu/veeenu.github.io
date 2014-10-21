@@ -38,7 +38,7 @@ Let $$ A $$ denote the 2D matrix representing the automaton. The Moore
 neighborhood for a generic cell $$ A_{x,y} $$ is defined as
 
 $$
-N_{x,y}(A) = \left\{ A_{x+i,y+j} \mid i, j \in [-1 .. 1] \right\}
+N_{x,y}(A) = \left\{ A_{x+i,y+j} \mid (i, j) \in [-1 .. 1]^2 \setminus (0, 0), \right\}
 $$
 
 Let $$A^i$$ be the matrix at the $$i$$th generation. We could say that
@@ -76,7 +76,7 @@ generation i vec = map step [0 .. length vec]
       where
         x = i `mod` 32
         y = i `div` 32
-        neighSum = foldr (+) 0 [getCell (x + x') (y + y') vec' | x' <- [-1..1], y' <- [-1..1]]
+        neighSum = foldr (+) 0 [getCell (x + x') (y + y') vec' | x' <- [-1..1], y' <- [-1..1], not (x' == 0 && y' == 0) ]
 {%endhighlight%}
 
 Coupled with Haskell's `System.Random`, we get a nice looking dungeon after a few generations:
@@ -88,3 +88,9 @@ You can read the whole code here: [https://gist.github.com/veeenu/8dbba3e53f94d7
 Surely this could have been done a lot better, and it will be, as I keep studying the
 language and getting better at it. Meanwhile, please feel free to criticize and comment
 whatever you feel like to! :)
+
+**ERRATA CORRIGE**. My friend Roberto pointed out that the 2-tuple $$(0, 0)$$ wasn't supposed
+to be part of the Moore neighborhood, and, besides that, its status was already taken into
+account for (but not used in this particular case) in the form of $$a_0$$ in the rule
+function anyway. This has now been corrected both in the code and in the mathematical
+expression.
