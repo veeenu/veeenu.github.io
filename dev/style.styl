@@ -69,6 +69,8 @@ body
       li
         padding         .75em 1em
         line-height     1.6em
+    img
+      max-width         100%
     ul#posts
       li
         display         block
@@ -130,3 +132,10 @@ em
   pre code
     font-family       monofont
     line-height       1.2em
+
+@media screen and (max-width: 640px)
+  html
+    font-size   80%
+    article#experience section.half
+      width     100%
+      padding   0

@@ -194,6 +194,9 @@ body article ul li {
   padding: 0.75em 1em;
   line-height: 1.6em;
 }
+body article img {
+  max-width: 100%;
+}
 body article ul#posts li {
   display: block;
   background: #f5f5f5;
@@ -265,4 +268,13 @@ em {
 .highlight pre code {
   font-family: 'Source Code Pro', monospace;
   line-height: 1.2em;
+}
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 80%;
+  }
+  html article#experience section.half {
+    width: 100%;
+    padding: 0;
+  }
 }
