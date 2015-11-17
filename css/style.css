@@ -249,10 +249,10 @@ strong {
 em {
   font-style: italic;
 }
-figure.highlight {
+.highlight {
   padding: 0.5em;
 }
-figure.highlight pre code {
+.highlight pre code {
   font-family: 'Source Code Pro', monospace;
   line-height: 1.2em;
 }
