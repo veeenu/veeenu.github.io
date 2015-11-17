@@ -1,0 +1,16 @@
+| ---
+| layout: default
+| title: Posts
+| ---
+| 
+article
+  header
+    h1 Posts
+  ul#posts
+    | {% for post in site.posts %}
+    li
+      a(href="{{ post.url }}")
+        | {{ post.title }}
+        br
+        small {{ post.date | date_to_string }}
+    | {% endfor %}
