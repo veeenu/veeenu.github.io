@@ -194,6 +194,22 @@ body article ul li {
   padding: 0.75em 1em;
   line-height: 1.6em;
 }
+body article section ul {
+  list-style-type: disc;
+  padding-left: 2em;
+}
+body article section ol {
+  list-style-type: upper-roman;
+  padding-left: 2em;
+}
+body article section h1 {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+body article section div.MathJax_Display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
 body article img {
   max-width: 100%;
 }
