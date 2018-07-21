@@ -135,7 +135,7 @@ a:hover {
 body {
   background: #f5f5f5;
   color: #333;
-  font-family: Lora;
+  font-family: 'Alegreya Sans';
   padding: 4rem 0rem;
 }
 body > header {
@@ -175,7 +175,7 @@ body article > header h1 {
 body article p {
   text-align: justify;
   font-size: 1.2rem;
-  line-height: 1.6em;
+  line-height: 1.25em;
   padding: 0.5em 0em;
 }
 body article h2,
@@ -191,7 +191,7 @@ body article ul {
   list-style-type: none;
 }
 body article ul li {
-  padding: 0.75em 1em;
+  padding: 0.25em 1em;
   line-height: 1.6em;
 }
 body article section ul {
@@ -217,7 +217,6 @@ body article ul#posts li,
 body article ul.posts li {
   display: block;
   background: #f5f5f5;
-  border-top: 1px solid #999;
   transition: background 0.3s ease;
 }
 body article ul#posts li a,
@@ -266,14 +265,15 @@ article#experience section.half ul.cloud {
   text-align: center;
 }
 article#experience section.half ul.cloud li {
-  font-family: 'Source Code Pro', monospace;
   display: inline-block;
-  padding: 0.25em 0.5em;
-  margin: 0.25em;
+  padding: 0em 0.5em;
+  margin: 0.125em;
+  font-weight: bold;
+  cursor: pointer;
   border: 1px solid #999;
-  border-radius: 8px;
-  color: #f5f5f5;
-  background: #62b1d0;
+}
+article#experience section.half ul.cloud li:hover {
+  color: #62b1d0;
 }
 strong {
   font-weight: bold;
@@ -286,7 +286,7 @@ em {
   overflow: auto;
 }
 .highlight pre code {
-  font-family: 'Source Code Pro', monospace;
+  font-family: 'Inconsolata', monospace;
   line-height: 1.2em;
 }
 @media screen and (max-width: 640px) {

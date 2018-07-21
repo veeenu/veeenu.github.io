@@ -1,23 +1,28 @@
-DIR  := ..
-JADE := $(shell find jade -name '*.jade')
-HTML := $(JADE:jade/%.jade=$(DIR)/%.html)
+# Actually ignore this file, simply do
+# $ pug --watch dev/pug -o .
+# $ stylus -w -o css dev
+# $ jekyll serve
 
-$(DIR)/%.html: jade/%.jade
-	jade < $< > $@ 
+DIR  := ..
+PUG := $(shell find pug -name '*.pug')
+HTML := $(PUG:pug/%.pug=$(DIR)/%.html)
+
+$(DIR)/%.html: pug/%.pug
+  pug < $< > $@ 
 
 $(DIR)/css/style.css: style.styl reset.styl
-	stylus style.styl -o ../css
+  stylus style.styl -o ../css
 
-jade: $(HTML)
-	@:
+pug: $(HTML)
+  @:
 
 stylus: $(DIR)/css/style.css
-	@:
+  @:
 
-all: jade stylus
-	@:
+all: pug stylus
+  @:
 
 watch:
-	while true; do $(MAKE) -s all; sleep 1; done
+  while true; do $(MAKE) -s all; sleep 1; done
 
-.PHONY: jade stylus all watch
+.PHONY: pug stylus all watch

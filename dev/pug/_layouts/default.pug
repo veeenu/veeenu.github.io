@@ -10,7 +10,7 @@ html
     meta(property='og:description',content='{{ page.excerpt | strip_html | strip_newlines | truncate:300 }}')
     | {% endif %}
     title Andrea Venuta {% if page.title %}| {{ page.title }}{% endif %}
-    link(rel='stylesheet',href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Lora:400,700')
+    link(rel='stylesheet',href='https://fonts.googleapis.com/css?family=Inconsolata|Alegreya+Sans:400,700')
     link(rel='stylesheet',href='/css/style.css')
     link(rel='stylesheet',href='/css/syntax.css')
   body
@@ -22,7 +22,7 @@ html
         a(href='/') About
         a(href='/blog.html') Blog
         a(href='https://github.com/veeenu',target='_blank') Github
-        a(href='https://twitter.com/veeeeenu',target='_blank') Twitter
+        a(href='https://twitch.tv/johndisandonato',target='_blank') Twitch
         a(href='https://it.linkedin.com/in/andreavenuta',target='_blank') LinkedIn
         a(href='/cv.pdf') Curriculum Vitae
     | {{content}}

@@ -9,7 +9,8 @@ color3 = #024c68
 color4 = #3aa6d0
 color5 = #62b1d0
 
-monofont = 'Source Code Pro', monospace
+monofont = 'Inconsolata', monospace
+sansfont = 'Alegreya Sans'
 
 a
   text-decoration none
@@ -21,7 +22,7 @@ a:hover
 body
   background    #f5f5f5
   color         #333333
-  font-family   Lora
+  font-family   sansfont
   padding       4rem 0rem
 
   & > header
@@ -58,7 +59,7 @@ body
     p
       text-align  justify
       font-size   1.2rem
-      line-height 1.6em
+      line-height 1.25em
       padding     .5em 0em
     h2, h3, h4, h5, h6
       font-size   1.4rem
@@ -67,7 +68,7 @@ body
     ul
       list-style-type  none
       li
-        padding         .75em 1em
+        padding         .25em 1em
         line-height     1.6em
     section
       ul
@@ -88,7 +89,7 @@ body
       li
         display         block
         background      #f5f5f5
-        border-top      1px solid #999
+        // border-top      1px solid #999
         transition      background .3s ease 
         a
           display       block
@@ -125,14 +126,18 @@ article#experience
     ul.cloud
       text-align      center
       li
-        font-family   monofont
+        // font-family   monofont
         display       inline-block
-        padding       .25em .5em
-        margin        .25em
+        padding       .0em .5em
+        margin        .125em
+        font-weight   bold
+        cursor        pointer
+        &:hover
+          color       color5
         border        1px solid #999
-        border-radius 8px
-        color         #f5f5f5
-        background    color5
+        // border-radius 8px
+        // color         #f5f5f5
+        // background    color5
 
 strong
   font-weight       bold
