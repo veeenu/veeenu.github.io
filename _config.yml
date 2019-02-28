@@ -1,4 +1,4 @@
 name: Andrea Venuta
 markdown: kramdown
-highlighter: pygments
+highlighter: rouge
 exclude: [dev]
