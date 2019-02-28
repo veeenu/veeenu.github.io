@@ -20,15 +20,23 @@ body
   font-family: Raleway, Helvetica, sans-serif
   background: color-primary-3;
   color: color-white;
-  padding-bottom: 8rem
+  @media (min-width: 550px) 
+    padding-bottom: 8rem
+  padding-bottom: 4rem
 
   & > div > header
-    margin-top: 6rem
-    margin-bottom: 4rem
+    @media (min-width: 550px) 
+      margin-top: 6rem
+      margin-bottom: 4rem
+
+    margin-top: 2rem
+    margin-bottom: 2rem
     img
       height: 8rem
       vertical-align: middle
       margin-right: 2rem
+    h1
+      font-size: 2.5rem
 
 a
   color: color-blue-2
@@ -38,13 +46,19 @@ code
   background: color-primary-2
   border-width: 0
 
+img
+  max-width: 100%
+
 ul.navbar
   list-style: none
   display: flex
+  flex-wrap: wrap
   & > li
     display: block
     flex-grow: 1
-    padding: 1rem 0
+    @media (min-width: 550px) 
+      padding: 1rem
+    padding: 0 1rem
     border-bottom: 2px solid transparent
 
     &:hover
