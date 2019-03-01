@@ -1,4 +1,4 @@
 name: Andrea Venuta
 markdown: kramdown
 highlighter: rouge
-exclude: [dev]
+exclude: [dev, preprocess, ipynb]
