@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Pokémon Go Feature detection with OpenCV2 Part I'
+title: 'Pokémon Go Feature detection with OpenCV2'
 date: 2019-02-28 23:30
 ---
 
@@ -146,4 +146,4 @@ Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
 **HA! GOTCHA!**
 
-That's it for this post. In the next one, we'll see how we can fit a polynomial through a sensible excellent curveball path. Later!
+That's it for this post. More study is required to understand how we could fit a polynomial through a sensible excellent curveball path. Later!
