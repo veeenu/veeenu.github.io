@@ -98,6 +98,67 @@ LPVOID presentOriginal = reinterpret_cast<LPVOID>(
       (IDXGISwapChainPresent)((DWORD_PTR)hDxgi + 0x5070));
 ```
 
+**Update**. Supplying the address directly tends to work, as generally
+everyone is on the same DLL patch; unfortunately, its drawback is that
+eventually libraries can and will be updated. That's what happened to me just
+yesterday when, after a Windows update, none of my mods were working any
+longer. As I immediately suspected, I noticed the `dxgi.dll` library's
+timestamp was updated, hence the library itself was overridden by a new
+version, and the `Present()` function was displaced by the new compilation.
+Thankfully, while the `Present()` method is not directly exported by the DLL,
+a more future-proof method of finding the function address still exists. The
+`IDXGISwapChain` class is, in fact, endowed with virtual methods which can be
+looked up in its [vtable](https://en.wikipedia.org/wiki/Virtual_method_table).
+If we can instantiate a `IDXGISwapChain` object, we can crawl its vtable
+until we find our method; to do this, we need to instantiate the class with
+the correct virtual method implementation. All that is needed is to replicate
+the way the `IDXGISwapChain` object is instantiated in real life; that is, 
+allocate and build up all the necessary structs, and call the
+[`D3D11CreateDeviceAndSwapChain`](https://docs.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-d3d11createdeviceandswapchain)
+method. Once obtained, we cast the object as a `DWORD` pointer, and chain
+pointer lookups until we find the 8th method, as the OP of
+[this unknowncheats forum post](https://www.unknowncheats.me/forum/d3d-tutorials-and-source/88369-universal-d3d11-hook.html)
+did for his own hook engine, and is outlined in the following:
+
+```cpp
+LPVOID swapchain_present_vtable_lookup() {
+  D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
+  ID3D11Device *pDevice = nullptr;
+  ID3D11DeviceContext *pContext = nullptr;
+  IDXGISwapChain* pSwapChain = nullptr;
+
+  DXGI_SWAP_CHAIN_DESC swapChainDesc;
+  ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
+  swapChainDesc.BufferCount = 1;
+  swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+  swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+  swapChainDesc.OutputWindow = GetForegroundWindow();
+  swapChainDesc.SampleDesc.Count = 1;
+  swapChainDesc.Windowed = TRUE;
+  swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+  swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+  swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+  if (FAILED(D3D11CreateDeviceAndSwapChain(
+      NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, NULL, &featureLevel, 1,
+      D3D11_SDK_VERSION, &swapChainDesc, &pSwapChain, &pDevice, NULL, &pContext))) {
+    std::cout << "D3D11CreateDeviceAndSwapChain failed" << std::endl;
+    return nullptr;
+  }
+
+  DWORD_PTR* pSwapChainVtable;
+  pSwapChainVtable = (DWORD_PTR*)pSwapChain;
+  pSwapChainVtable = (DWORD_PTR*)pSwapChainVtable[0];
+  LPVOID ret = reinterpret_cast<LPVOID>(pSwapChainVtable[8]);
+
+  pDevice->Release();
+  pContext->Release();
+  pSwapChain->Release();
+
+  return ret;
+}
+```
+(**Updated 2019-08-20**).
+
 After that, we want to perform the following actions:
 
 - Patch the original `Present()` function with unconditional `JMP` instructions
