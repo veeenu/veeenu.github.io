@@ -93,7 +93,7 @@ Granted, it's not as visually fancy as Kensler's version, nor particularly good
 looking. But it gets the job done, and it has allowed me to experiment on a
 number of techniques. At 3306 characters, it's also considerably beefier. You
 can find the full code of my version, but in a much more tolerable shape,
-[here](/2020-04-29/main_full.rs).
+[here](/data/2020-04-29/main_full.rs).
 
 The general idea was sourced from [this nice ShaderToy](https://www.shadertoy.com/view/Xl2XWt)
 which has everything thoroughy explained. I had to of course give the concepts
