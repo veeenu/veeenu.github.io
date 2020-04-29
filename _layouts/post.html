@@ -1,14 +1,29 @@
 ---
 layout: default
 ---
-<article>
+{% assign words = content | number_of_words %}
+<article class='blog-post'>
   <header>
     <h1>{{ page.title }}</h1>
+    <small>
+      <p>
+        <time>{{ page.date | date_to_string }}</time>
+        &middot;
+        <em>
+          Reading time:
+          {% if words < 360 %}
+            1 min
+          {% else %}
+            {{words | divided_by:180}} mins
+          {% endif %}
+        </em>
+      </p>
+    </small>
   </header>
   <section>{{ content }}</section>
-  <footer>
+  <!--<footer>
     <time>{{ page.date | date_to_string }}</time>
-  </footer>
+  </footer>-->
   <div id="disqus_thread">
 
   </div>
