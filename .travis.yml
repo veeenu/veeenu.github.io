@@ -1,0 +1,16 @@
+dist: bionic
+language: minimal
+
+before_script:
+  - curl -s -L https://github.com/getzola/zola/releases/download/v0.10.1/zola-v0.10.1-x86_64-unknown-linux-gnu.tar.gz  | sudo tar xvzf - -C /usr/local/bin
+
+script:
+  - zola build
+
+after_success: |
+  [ $TRAVIS_BRANCH = master ] &&
+  [ $TRAVIS_PULL_REQUEST = false ] &&
+  zola build &&
+  sudo pip install ghp-import &&
+  ghp-import -n public -b gh-pages &&
+  git push -fq https://${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages

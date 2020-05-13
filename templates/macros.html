@@ -1,0 +1,16 @@
+{% macro page_description() %}
+  {% if page.summary %}
+    {{ page.summary | striptags }}
+  {% elif page.description %}
+    {{ page.description | striptags }}
+  {% elif section.description %}
+    {{ section.description | striptags }}
+  {% endif %}
+{% endmacro page_description%}
+{% macro page_title() %}
+  {% if page.title %}
+    {{ page.title | striptags }}
+  {% elif section.title %}
+    {{ section.title | striptags }}
+  {% endif %}
+{% endmacro page_description%}

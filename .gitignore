@@ -1,6 +1,1 @@
-_site
-.DS_Store
-.sass-cache
-**/*.swp
-node_modules
-ignore
+public

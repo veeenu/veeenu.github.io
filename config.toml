@@ -1,0 +1,12 @@
+# The URL the site will be built for
+base_url = "https://veeenu.github.io/ssg-test"
+
+generate_rss = true
+compile_sass = true
+highlight_code = true
+highlight_theme = "one-dark"
+build_search_index = false
+extra_syntaxes = ["syntaxes"]
+
+[extra]
+# Put all your custom variables here

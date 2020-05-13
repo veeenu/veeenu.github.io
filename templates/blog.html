@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% block content %}
+  <section id="posts" class="container top-container">
+    {% for page in section.pages %}
+      <article>
+        <header>
+          <h4><a href="{{ page.permalink | safe }}">{{ page.title }}</a><br/></h4>
+          <small>
+            <time>{{ page.date | date(format = "%A, %e %h %Y") }}</time>
+            &middot;
+            <em>
+              Reading time: 
+              {% if page.reading_time <= 1 %}
+                1 min
+              {% else %}
+                {{ page.reading_time }} mins
+              {% endif %}
+            </em>
+          </small><br/>
+        </header>
+      {% if page.summary %}{{ page.summary | trim | safe }}{% endif %}
+      </article>
+    {% endfor %}
+  </section>
+{% endblock content %}
