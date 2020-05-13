@@ -1,5 +1,5 @@
 # The URL the site will be built for
-base_url = "https://veeenu.github.io/ssg-test"
+base_url = "https://veeenu.github.io"
 
 generate_rss = true
 compile_sass = true
