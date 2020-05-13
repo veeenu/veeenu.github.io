@@ -111,7 +111,7 @@ description = "Andrea Venuta. Software engineer, graphics programmer"
         <p>I study and work with 3D modeling and rendering algorithms and image
         processing. I'm familiar with the OpenGL pipeline and various
         mathematical methods of describing and rendering geometry. On occasion I
-        like to write about them in my <a href='/blog.html'>blog</a>.</p>
+        like to write about them in my <a href='/blog'>blog</a>.</p>
       </section>
     </article>
   </div>
