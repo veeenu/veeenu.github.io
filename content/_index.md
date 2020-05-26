@@ -31,6 +31,11 @@ description = "Andrea Venuta. Software engineer, graphics programmer"
               <img alt="Twitch.tv" src="https://unpkg.com/simple-icons@2.11.0/icons/twitch.svg"/>
             </a>
           </li>
+          <li>
+            <a href="cv.pdf" target="_blank">
+              <img alt="CV - Icon made by Vitaly Gorbachev (https://www.flaticon.com/authors/vitaly-gorbachev) from www.flaticon.com" src="cv.svg"/>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
