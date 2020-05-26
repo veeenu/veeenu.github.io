@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width'>
+    <meta property='og:title' content='FEZ: engine algorithms and ideas'>
+    <meta property='og:type' content='website'>
+    <meta property='og:site_name' content='Andrea Venuta'>
+    <meta property='og:description' content='Yesterday I played for the first time Polytron&#x27;s FEZ.
+Graphics and design are amazing, but what truly struck me was the way the game
+switched between the 2D and 3D &amp;quot;looks&amp;quot;. It was truly inspiring, so I decided to
+spend a little time understanding and recreating the world rotation engine.'>
+    <title>FEZ: engine algorithms and ideas</title>
+    <link rel="stylesheet" href="https://veeenu.github.io/skeleton.css" />
+    <link rel="stylesheet" href="https://veeenu.github.io/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"/>
+  </head>
+
+  <body>
+    <header id="menu-header">
+      <a class="image" href="https://veeenu.github.io">
+        <div>
+          <img src="https://veeenu.github.io/me.jpg" alt="Andrea Venuta"/>
+        </div>
+        <span>Andrea Venuta</span>
+      </a>
+      <ul>
+        <li><a href="https://veeenu.github.io">About</a></li>
+        <li><a href="https://veeenu.github.io/blog.html">Blog</a></li>
+      </ul>
+    </header>
+
+    
+<div class="container top-container"><div class="row">
+  <article class="article twelve columns">
+    <header>
+      <h1>FEZ: engine algorithms and ideas</h1>
+      <small>
+        <p>
+          <time>Thursday, 25 Dec 2014</time>
+          &middot;
+          <em>
+            Reading time:
+            
+              4 mins
+            
+          </em>
+        </p>
+      </small>
+    </header>
+    <section>
+      <p>Yesterday I played for the first time <a href="http://fezgame.com/">Polytron's FEZ</a>.
+Graphics and design are amazing, but what truly struck me was the way the game
+switched between the 2D and 3D &quot;looks&quot;. It was truly inspiring, so I decided to
+spend a little time understanding and recreating the world rotation engine. <span id="continue-reading"></span></p>
+<p>Turns out the mind-blowing effect is simply based on orthographic view
+transforms. Orthographic views aren't really used in realistic optical systems,
+because the projection preserves proportions and line parallelism. In other
+words, there is no perspective and far objects look as big as near objects.</p>
+<p>This means that transformations look less realistic, and also that projecting a
+cube directly facing the camera is exactly the same as drawing its front face,
+ignoring everything else, regardless of its position. Perspective projection
+doesn't allow that: if you draw a cube positioned in the bottom left half of the
+frustum and projected via a perspective matrix, you're going to see its right
+and top sides. What we do want here is not realism, but a way of conveniently
+displaying a 2D environment and occasionally rotate it about the Y axis, and
+orthographic projection does exactly that.</p>
+<p>The idea behind it all is that the game environments are the four sides of a
+cube-ish structure, and switching between them causes a gradual <script type="math/tex">\frac{\pi}{2}</script> rotation of the whole environment, so that the player always faces a 2D world.
+The collision detection algorithms then simply ignore the dimension currently
+facing away from the player (e.g. in the <script type="math/tex">z</script> direction when no rotation is 
+applied) thus making the player roam in a purely 2D environment.</p>
+<h3 id="the-code">The code</h3>
+<p>I quickly sketched these ideas and you can see the results <a href="http://bl.ocks.org/veeenu/d6ff96aae4b48e8dc26e">here</a>.</p>
+<img src='/data/2014-12-25/screenshot.jpg' alt=''/>
+<p>In the meantime I also did a little bit of experimenting with procedural texture
+generation. What I did was implement a awfully minimal voxel engine which
+basically took a 3D point and created and textured a cube mesh around it. After
+the voxels were in place, I moved on to creating an orthogonal projection matrix
+(whose only job was to adjust to the screen's aspect ratio) and initialized the view
+matrix as the identity. To simulate FEZ's rotational movement, I used a quintic
+easing function. To make things quick I created an easing lookup table,
+containing all the possible values used to animate the view matrix. The
+peculiarity is that I didn't map the quintic function to <script type="math/tex">\left[0, 1\right]</script>, but
+created a transition made of small increments. This way, instead of specifying
+all the possible rotation angles, I just specified how much the view matrix
+should rotate at every step so I don't have to reinitialize it to identity every
+time.</p>
+<p>In the final code I restricted the rotations to the Y axis, but in the
+picture above you can see what the world looks like seen from an angle. A 2D
+view, instead, looks like this:</p>
+<img src='/data/2014-12-25/screenshot2.jpg' alt=''/>
+<p>I also had a little fun procedurally recreating the Minecraft's dirt block
+texture, inspired by <a href="http://jsfiddle.net/uzMPU/">this fiddle</a>. The idea is to
+have a random factor that dims the brightness a bit, and then expressing each
+block of the texture with its own color. The top and bottom of the texture are
+simply a green and brown color with noise applied. The side is green the first
+few pixels, brown the last few pixels, and there's a small area, around the 7th
+horizontal line from top, where it's left to chance whether to put a brown or a
+green pixel.</p>
+<p>You can <a href="http://bl.ocks.org/veeenu/d6ff96aae4b48e8dc26e">see the code in action here</a>,
+and <a href="https://gist.github.com/veeenu/d6ff96aae4b48e8dc26e/">read it here</a>.</p>
+<p>Merry Christmas! :)</p>
+
+    </section>
+  </article></div>
+  <div class="row"><div class="column" id="disqus_thread">
+
+  </div></div>
+  <script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'veeenu'; // required: replace example with your forum shortname
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();</script>
+</div>
+
+
+    <script async src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+    <!--<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-40567248-2', 'veeenu.github.io');
+      ga('send', 'pageview');
+    </script>-->
+    <!-- Google Analytics -->
+    <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-40567248-2', 'veeenu.github.io');
+    ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+  </body>
+</html>

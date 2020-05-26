@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://veeenu.github.io/sitemap.xml

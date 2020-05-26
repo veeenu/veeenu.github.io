@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width'>
+    <meta property='og:title' content='Learning Haskell with Venu: Cellular automata'>
+    <meta property='og:type' content='website'>
+    <meta property='og:site_name' content='Andrea Venuta'>
+    <meta property='og:description' content='Lately I&#x27;ve been experimenting a lot with a number of CG and procedural content
+generation algorithms, and began feeling the need for mathematical rigour over
+the practical, &amp;quot;real life situation&amp;quot; style I&#x27;ve been used to by writing
+Javascript day in, day out. I got to a point where simple simulations required
+way more boilerplate code than I was willing to write, and the usage of native
+numeric constructs began getting in the way of performance.'>
+    <title>Learning Haskell with Venu: Cellular automata</title>
+    <link rel="stylesheet" href="https://veeenu.github.io/skeleton.css" />
+    <link rel="stylesheet" href="https://veeenu.github.io/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"/>
+  </head>
+
+  <body>
+    <header id="menu-header">
+      <a class="image" href="https://veeenu.github.io">
+        <div>
+          <img src="https://veeenu.github.io/me.jpg" alt="Andrea Venuta"/>
+        </div>
+        <span>Andrea Venuta</span>
+      </a>
+      <ul>
+        <li><a href="https://veeenu.github.io">About</a></li>
+        <li><a href="https://veeenu.github.io/blog.html">Blog</a></li>
+      </ul>
+    </header>
+
+    
+<div class="container top-container"><div class="row">
+  <article class="article twelve columns">
+    <header>
+      <h1>Learning Haskell with Venu: Cellular automata</h1>
+      <small>
+        <p>
+          <time>Monday, 20 Oct 2014</time>
+          &middot;
+          <em>
+            Reading time:
+            
+              4 mins
+            
+          </em>
+        </p>
+      </small>
+    </header>
+    <section>
+      <p>Lately I've been experimenting a lot with a number of CG and procedural content
+generation algorithms, and began feeling the need for mathematical rigour over
+the practical, &quot;real life situation&quot; style I've been used to by writing
+Javascript day in, day out. I got to a point where simple simulations required
+way more boilerplate code than I was willing to write, and the usage of native
+numeric constructs began getting in the way of performance. <span id="continue-reading"></span> For example, I was
+working on an <script type="math/tex">O(n)</script> image processing algorithm, representing the pixels as
+plain 1D arrays, and I discovered that wrapping the aforementioned array
+inside a native <code>Uint32Array</code> produced an impressive performance boost, cutting
+the execution time from ~46ms to ~1.5ms at the expense of adding a little
+boilerplate code. Which is great in and of itself, but not so great in terms of
+code cleanliness, and code cleanliness is fundamental when I'm trying to
+represent somewhat complex mathematical ideas.</p>
+<p>So I decided to look into functional programming. After reading about it for a
+bit, I began working my way through the <a href="https://github.com/veeenu/ninetynine-haskell-problems">Ninety-nine Haskell Problems</a>
+to get comfortable with the new paradigm, and then decided to prototype
+something a bit more challenging.</p>
+<h3 id="cellular-automata">Cellular automata</h3>
+<p>I chose to implement a simple cellular automaton. A <em>cellular automaton</em> is a
+discrete computation model defined over a grid of cells, each one having a
+state. Each step of the computation, called <em>generation</em>, involves computing
+a new state for each cell that depends upon the previous states of the cell
+and of a chosen subset of neighboring cells. The criteria with which the new
+state is computed are called <em>rules</em> and are, basically, a function of those
+previous states.</p>
+<p>Let's choose a neighborhood in the form of the <a href="http://en.wikipedia.org/wiki/Moore_neighborhood">Moore neighborhood</a>.
+Let <script type="math/tex">A</script> denote the 2D matrix representing the automaton. The Moore
+neighborhood for a generic cell <script type="math/tex">A_{x,y}</script> is defined as</p>
+<script type="math/tex; mode=display">N_{x,y}(A) = \left\{ A_{x+i,y+j} \mid (i, j) \in [-1 .. 1]^2 \setminus (0, 0) \right\}</script>
+<p>Let <script type="math/tex">A^i</script> be the matrix at the <script type="math/tex">i</script>th generation. We could say that</p>
+<script type="math/tex; mode=display">A^i_{x,y} = f(A^{i-1}_{x,y},N_{x,y}(A^{i-1}))</script>
+<p>Finally, we could decide our rule function <script type="math/tex">f</script> to be a simplified version of the
+one described in this <a href="http://gamedevelopment.tutsplus.com/tutorials/generate-random-cave-levels-using-cellular-automata--gamedev-9664">nice article</a>
+about cellular automata which I suggest you read, too.</p>
+<script type="math/tex; mode=display">f(a_0,a_1...a_n) = \begin{cases} 1 &\mbox{} \sum\limits_{i=1}^n a_i > 4 \\
+                   0 &\mbox{} otherwise \end{cases}</script>
+<p>I decided to represent the automaton's grid as a plain 1D array. The <code>generation</code>
+function is defined inductively with great ease; being <code>vec</code> the array containing
+the grid, the generation 0 is the array itself, and each subsequent generation
+is defined as the <code>step</code> function mapped over the values of the previous
+generation. <code>step</code> corresponds to the <script type="math/tex">f</script> defined before, and the sum over the
+neighborhood is represented as the fold of the sum operation over the cell values
+extracted by the <code>getCell</code> function.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#5cb3fa;">generation </span><span style="color:#cd74e8;">:: Int -&gt;</span><span style="color:#abb2bf;"> [</span><span style="color:#cd74e8;">Int</span><span style="color:#abb2bf;">] </span><span style="color:#cd74e8;">-&gt;</span><span style="color:#abb2bf;"> [</span><span style="color:#cd74e8;">Int</span><span style="color:#abb2bf;">]
+
+generation 0 vec </span><span style="color:#adb7c9;">= </span><span style="color:#abb2bf;">vec
+generation i vec </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> map step [</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">..</span><span style="color:#abb2bf;"> length vec]
+  </span><span style="color:#cd74e8;">where</span><span style="color:#abb2bf;">
+    vec&#39; </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> generation (i</span><span style="color:#adb7c9;">-</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">) vec
+    </span><span style="color:#5cb3fa;">step </span><span style="color:#cd74e8;">:: Int -&gt; Int</span><span style="color:#abb2bf;">
+    step i </span><span style="color:#adb7c9;">= </span><span style="color:#cd74e8;">if</span><span style="color:#abb2bf;"> (neighSum </span><span style="color:#adb7c9;">&gt; </span><span style="color:#db9d63;">4</span><span style="color:#abb2bf;">) </span><span style="color:#cd74e8;">then </span><span style="color:#db9d63;">1 </span><span style="color:#cd74e8;">else </span><span style="color:#db9d63;">0
+      </span><span style="color:#cd74e8;">where</span><span style="color:#abb2bf;">
+        x </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> i </span><span style="color:#db9d63;">`</span><span style="color:#adb7c9;">mod</span><span style="color:#db9d63;">` 32</span><span style="color:#abb2bf;">
+        y </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> i </span><span style="color:#db9d63;">`</span><span style="color:#adb7c9;">div</span><span style="color:#db9d63;">` 32</span><span style="color:#abb2bf;">
+        neighSum </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> foldr </span><span style="color:#5cb3fa;">(+) </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;"> [getCell (x </span><span style="color:#adb7c9;">+</span><span style="color:#abb2bf;"> x&#39;) (y </span><span style="color:#adb7c9;">+</span><span style="color:#abb2bf;"> y&#39;) vec&#39; </span><span style="color:#adb7c9;">|</span><span style="color:#abb2bf;"> x&#39; </span><span style="color:#adb7c9;">&lt;-</span><span style="color:#abb2bf;"> [</span><span style="color:#adb7c9;">-</span><span style="color:#db9d63;">1</span><span style="color:#adb7c9;">..</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">], y&#39; </span><span style="color:#adb7c9;">&lt;-</span><span style="color:#abb2bf;"> [</span><span style="color:#adb7c9;">-</span><span style="color:#db9d63;">1</span><span style="color:#adb7c9;">..</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">], not (x&#39; </span><span style="color:#adb7c9;">== </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;"> &amp;&amp; y&#39; </span><span style="color:#adb7c9;">== </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">) ]
+</span></pre>
+<p>Coupled with Haskell's <code>System.Random</code>, we get a nice looking dungeon after a few generations:</p>
+<p><img src="/data/2014-10-20/ca_.png" alt="Cellular Automaton" /></p>
+<p>You can read the whole code here: <a href="https://gist.github.com/veeenu/8dbba3e53f94d7142c63">https://gist.github.com/veeenu/8dbba3e53f94d7142c63</a>.</p>
+<p>Surely this could have been done a lot better, and it will be, as I keep studying the
+language and getting better at it. Meanwhile, please feel free to criticize and comment
+whatever you feel like to! :)</p>
+<p><strong>ERRATA CORRIGE</strong>. My friend Roberto pointed out that the 2-tuple <script type="math/tex">(0, 0)</script> wasn't supposed
+to be part of the Moore neighborhood, and, besides that, its status was already taken into
+account for (but not used in this particular case) in the form of <script type="math/tex">a_0</script> in the rule
+function anyway. This has now been corrected both in the code and in the mathematical
+expression.</p>
+
+    </section>
+  </article></div>
+  <div class="row"><div class="column" id="disqus_thread">
+
+  </div></div>
+  <script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'veeenu'; // required: replace example with your forum shortname
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();</script>
+</div>
+
+
+    <script async src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+    <!--<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-40567248-2', 'veeenu.github.io');
+      ga('send', 'pageview');
+    </script>-->
+    <!-- Google Analytics -->
+    <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-40567248-2', 'veeenu.github.io');
+    ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+  </body>
+</html>

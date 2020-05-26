@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width'>
+    <meta property='og:title' content='Thema Regium, math rock and procedurally generated sound'>
+    <meta property='og:type' content='website'>
+    <meta property='og:site_name' content='Andrea Venuta'>
+    <meta property='og:description' content='No big secret, I&#x27;m a huge fan of procedural content generation. I&#x27;m also a big
+fan of Johann Sebastian Bach and his Musikalisches Opfer, whose fascinating
+story I came to know thanks to D.R. Hofstader&#x27;s
+&amp;quot;Gödel, Escher, Bach: an Eternal Golden Braid&amp;quot;.'>
+    <title>Thema Regium, math rock and procedurally generated sound</title>
+    <link rel="stylesheet" href="https://veeenu.github.io/skeleton.css" />
+    <link rel="stylesheet" href="https://veeenu.github.io/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"/>
+  </head>
+
+  <body>
+    <header id="menu-header">
+      <a class="image" href="https://veeenu.github.io">
+        <div>
+          <img src="https://veeenu.github.io/me.jpg" alt="Andrea Venuta"/>
+        </div>
+        <span>Andrea Venuta</span>
+      </a>
+      <ul>
+        <li><a href="https://veeenu.github.io">About</a></li>
+        <li><a href="https://veeenu.github.io/blog.html">Blog</a></li>
+      </ul>
+    </header>
+
+    
+<div class="container top-container"><div class="row">
+  <article class="article twelve columns">
+    <header>
+      <h1>Thema Regium, math rock and procedurally generated sound</h1>
+      <small>
+        <p>
+          <time>Thursday,  4 Dec 2014</time>
+          &middot;
+          <em>
+            Reading time:
+            
+              4 mins
+            
+          </em>
+        </p>
+      </small>
+    </header>
+    <section>
+      <p>No big secret, I'm a huge fan of procedural content generation. I'm also a big
+fan of Johann Sebastian Bach and his <em>Musikalisches Opfer</em>, whose fascinating
+story I came to know thanks to D.R. Hofstader's
+<a href="http://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach">&quot;Gödel, Escher, Bach: an Eternal Golden Braid&quot;</a>. <span id="continue-reading"></span>
+On the side of it, the readers of this blog might also know I'm a huge fan of
+Javascript, so at this point I don't see why putting the three things together
+should be a bad idea.</p>
+<p>These days I've been thinking of writing an engine that generates music from a
+known set of rules, the same, a bit mechanical maybe, way I did while studying
+musical composition: begin with a bass line melody starting from the fundamental
+tone, move around and about in some way, one cadence after the other, finish
+with the V-I cadence, then backtrack and harmonize the bass line (to err on the
+side of simple: in the form of a choral). I know many put their compressed scores 
+inside their demos and generate the sound according to the score, but I still 
+haven't found pure randomly generated music (I didn't look very hard, admittedly).</p>
+<p>Now for a philosophical quandary. You (I) could argue that human experience and
+feelings are of fundamental importance in musical composition. From this
+assertion alone could follow that letting a machine generate music may only
+result in dull, soulless, mechanical sounds.</p>
+<p>On the other hand, I firmly believe math to be a means of expressing
+nature in a way transcending the human experience (and, oftentimes, knowledge) 
+itself, and there's no shortage of examples - fractals, for instance, are
+&quot;nothing but&quot; beautiful mathematical representations of beautiful natural
+phenomena. So I'm going to try it and we'll see what comes out.</p>
+<p>Anyway I began prototyping a few things, got to work and, after a few minutes of
+tinkering, the following came out:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#cd74e8;">var </span><span style="color:#adb7c9;">ac  = new </span><span style="color:#abb2bf;">window.</span><span style="color:#eb6772;">AudioContext</span><span style="color:#abb2bf;">(),
+    </span><span style="color:#adb7c9;">osc = </span><span style="color:#eb6772;">ac</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">createOscillator</span><span style="color:#abb2bf;">(),
+    </span><span style="color:#adb7c9;">notes = </span><span style="color:#abb2bf;">{
+      </span><span style="color:#9acc76;">&#39;c&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">261.6</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;c#&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">277.2</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;db&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">277.2</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;d&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">293.7</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;d#&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">311.1</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;eb&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">311.1</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;e&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">329.6</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;f&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">349.2</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;f#&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">370.0</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;gb&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">370.0</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;g&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">392.0</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;g#&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">415.3</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;ab&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">415.3</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;a&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">440.0</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;a#&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">466.2</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;bb&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">466.2</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;b&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">493.9</span><span style="color:#abb2bf;">,
+      </span><span style="color:#9acc76;">&#39;--&#39;</span><span style="color:#abb2bf;">: </span><span style="color:#db9d63;">1
+    </span><span style="color:#abb2bf;">},
+    </span><span style="color:#5cb3fa;">toPrint </span><span style="color:#adb7c9;">= </span><span style="color:#cd74e8;">function</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">note</span><span style="color:#abb2bf;">) {
+      </span><span style="color:#cd74e8;">var </span><span style="color:#adb7c9;">out = </span><span style="color:#eb6772;">note</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">charAt</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">).</span><span style="color:#eb6772;">toUpperCase</span><span style="color:#abb2bf;">();
+      </span><span style="color:#cd74e8;">if</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">out === </span><span style="color:#9acc76;">&#39;-&#39;</span><span style="color:#abb2bf;">) </span><span style="color:#cd74e8;">return </span><span style="color:#9acc76;">&#39;&#39;</span><span style="color:#abb2bf;">;
+      </span><span style="color:#cd74e8;">if</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">note</span><span style="color:#abb2bf;">.length </span><span style="color:#adb7c9;">&gt; </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">) {
+        </span><span style="color:#cd74e8;">if</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">note</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">charAt</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">) </span><span style="color:#adb7c9;">=== </span><span style="color:#9acc76;">&#39;b&#39;</span><span style="color:#abb2bf;">)
+          </span><span style="color:#adb7c9;">out += </span><span style="color:#9acc76;">&#39;&amp;#9837;&#39;</span><span style="color:#abb2bf;">;
+        </span><span style="color:#cd74e8;">else
+          </span><span style="color:#adb7c9;">out += </span><span style="color:#9acc76;">&#39;&amp;#9839;&#39;</span><span style="color:#abb2bf;">;
+      }
+      </span><span style="color:#cd74e8;">return </span><span style="color:#adb7c9;">out</span><span style="color:#abb2bf;">;
+    },
+    </span><span style="color:#adb7c9;">themaRegium</span><span style="color:#abb2bf;">;
+
+</span><span style="font-style:italic;color:#5f697a;">// &quot;Thema Regium&quot; beat by Bach feat. Frederich II of Prussia
+// note octave duration note octave duration ...
+</span><span style="color:#adb7c9;">themaRegium = 
+  </span><span style="color:#9acc76;">&#39;c  1   2  eb 1  2   g  1  2   ab 1 2    b  0.5 2  -- 1 1  g  1 1 &#39; </span><span style="color:#adb7c9;">+
+  </span><span style="color:#9acc76;">&#39;f# 1   2  f  1  2   e  1  2   eb 1 3    d  1   1  db 1 1  c  1 1 &#39; </span><span style="color:#adb7c9;">+
+  </span><span style="color:#9acc76;">&#39;b  .5  1  a  .5 .5  g  .5 .5  c  1 1    f  1   1  eb 1 2  d  1 2 &#39; </span><span style="color:#adb7c9;">+
+  </span><span style="color:#9acc76;">&#39;c 1 4&#39;</span><span style="color:#abb2bf;">;
+</span><span style="color:#adb7c9;">themaRegium = </span><span style="color:#eb6772;">themaRegium</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">split</span><span style="color:#abb2bf;">(</span><span style="color:#5ebfcc;">/</span><span style="color:#db9d63;">\s</span><span style="color:#adb7c9;">+</span><span style="color:#5ebfcc;">/</span><span style="color:#cd74e8;">g</span><span style="color:#abb2bf;">);
+
+
+</span><span style="color:#cd74e8;">var </span><span style="color:#5cb3fa;">nextNote </span><span style="color:#adb7c9;">= </span><span style="color:#cd74e8;">function</span><span style="color:#abb2bf;">() {
+  </span><span style="color:#cd74e8;">if</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">themaRegium</span><span style="color:#abb2bf;">.length </span><span style="color:#adb7c9;">&lt; </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">) {
+    document.body.innerHTML </span><span style="color:#adb7c9;">+= </span><span style="color:#9acc76;">&#39;!&#39;</span><span style="color:#abb2bf;">; 
+    </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">osc</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">stop</span><span style="color:#abb2bf;">(); 
+  }
+
+  </span><span style="color:#cd74e8;">var </span><span style="color:#adb7c9;">note = </span><span style="color:#eb6772;">themaRegium</span><span style="color:#abb2bf;">.</span><span style="color:#5ebfcc;">shift</span><span style="color:#abb2bf;">(),
+      </span><span style="color:#adb7c9;">oct  = </span><span style="color:#5ebfcc;">parseFloat</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">themaRegium</span><span style="color:#abb2bf;">.</span><span style="color:#5ebfcc;">shift</span><span style="color:#abb2bf;">()),
+      </span><span style="color:#adb7c9;">dur  = </span><span style="color:#5ebfcc;">parseFloat</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">themaRegium</span><span style="color:#abb2bf;">.</span><span style="color:#5ebfcc;">shift</span><span style="color:#abb2bf;">()) </span><span style="color:#adb7c9;">* </span><span style="color:#db9d63;">250</span><span style="color:#abb2bf;">;
+      console.</span><span style="color:#5ebfcc;">log</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">note</span><span style="color:#abb2bf;">, </span><span style="color:#adb7c9;">dur</span><span style="color:#abb2bf;">);
+
+  </span><span style="color:#eb6772;">osc</span><span style="color:#abb2bf;">.frequency.value </span><span style="color:#adb7c9;">= </span><span style="color:#eb6772;">notes</span><span style="color:#abb2bf;">[</span><span style="color:#adb7c9;">note</span><span style="color:#abb2bf;">] </span><span style="color:#adb7c9;">* oct</span><span style="color:#abb2bf;">;
+  </span><span style="color:#5ebfcc;">setTimeout</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">nextNote</span><span style="color:#abb2bf;">, </span><span style="color:#adb7c9;">dur</span><span style="color:#abb2bf;">);
+  document.body.innerHTML </span><span style="color:#adb7c9;">+= </span><span style="color:#9acc76;">&#39; &#39; </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">toPrint</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">note</span><span style="color:#abb2bf;">);
+}
+
+</span><span style="color:#eb6772;">osc</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">connect</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">ac</span><span style="color:#abb2bf;">.destination);
+</span><span style="color:#eb6772;">osc</span><span style="color:#abb2bf;">.type </span><span style="color:#adb7c9;">= </span><span style="color:#9acc76;">&#39;triangle&#39;</span><span style="color:#abb2bf;">;
+</span><span style="color:#eb6772;">osc</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">start</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">);
+</span><span style="color:#eb6772;">nextNote</span><span style="color:#abb2bf;">();
+</span></pre>
+<p>Basically it's a crude regular language in which all <script type="math/tex">i % 3</script>th tokens represent
+a note, all <script type="math/tex">i % 3 + 1</script>th tokens represent the octave (expressed in a power of
+2: e.g. lower octave is <script type="math/tex">\frac{1}{2}</script>, upper octave is <script type="math/tex">2</script>, next one is <script type="math/tex">4</script>
+und so weiter) and all <script type="math/tex">i % 3 + 2</script> tokens represent the duration. The
+<code>nextNote</code> function is a finite state automaton that picks three values,
+translates it to a frequency, plugs it in the oscillator, then waits for <code>dur * 250</code> ms and moves on.</p>
+<p>You can read the full code <a href="https://gist.github.com/veeenu/af48a4834ebc33306412">here</a>
+and listen to it in action <a href="http://bl.ocks.org/veeenu/af48a4834ebc33306412">here</a>.</p>
+<p>I'd love to hear from you; what's your stance in the &quot;man vs machine in music&quot;
+discourse?</p>
+
+    </section>
+  </article></div>
+  <div class="row"><div class="column" id="disqus_thread">
+
+  </div></div>
+  <script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'veeenu'; // required: replace example with your forum shortname
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();</script>
+</div>
+
+
+    <script async src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+    <!--<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-40567248-2', 'veeenu.github.io');
+      ga('send', 'pageview');
+    </script>-->
+    <!-- Google Analytics -->
+    <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-40567248-2', 'veeenu.github.io');
+    ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+  </body>
+</html>

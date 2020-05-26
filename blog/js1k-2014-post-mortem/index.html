@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width'>
+    <meta property='og:title' content='JS1k 2014: Post-mortem'>
+    <meta property='og:type' content='website'>
+    <meta property='og:site_name' content='Andrea Venuta'>
+    <meta property='og:description' content='This year I discovered the JS1k code competition just in time for me to submit an entry. I&#x27;m not really new at doing ugly things with source code, but this time it was quite different. Perl is one of the quirkiest things I&#x27;ve ever put my hands on, and back in the day when I was scripting day in and day out with it I was happy like a child (well, I was practically a child after all); my Javascript coding skills came through a much more professional context though, so I&#x27;m better at being a nice guy and writing clean code than anything else.'>
+    <title>JS1k 2014: Post-mortem</title>
+    <link rel="stylesheet" href="https://veeenu.github.io/skeleton.css" />
+    <link rel="stylesheet" href="https://veeenu.github.io/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"/>
+  </head>
+
+  <body>
+    <header id="menu-header">
+      <a class="image" href="https://veeenu.github.io">
+        <div>
+          <img src="https://veeenu.github.io/me.jpg" alt="Andrea Venuta"/>
+        </div>
+        <span>Andrea Venuta</span>
+      </a>
+      <ul>
+        <li><a href="https://veeenu.github.io">About</a></li>
+        <li><a href="https://veeenu.github.io/blog.html">Blog</a></li>
+      </ul>
+    </header>
+
+    
+<div class="container top-container"><div class="row">
+  <article class="article twelve columns">
+    <header>
+      <h1>JS1k 2014: Post-mortem</h1>
+      <small>
+        <p>
+          <time>Monday,  7 Apr 2014</time>
+          &middot;
+          <em>
+            Reading time:
+            
+              10 mins
+            
+          </em>
+        </p>
+      </small>
+    </header>
+    <section>
+      <p>This year I discovered the <a href="http://js1k.com">JS1k</a> code competition just in time for me to submit an entry. <a href="https://gist.github.com/veeenu/10016903">I'm not really new at doing ugly things with source code</a>, but this time it was quite different. Perl is one of the quirkiest things I've ever put my hands on, and back in the day when I was scripting day in and day out with it I was happy like a child (well, I <em>was</em> practically a child after all); my Javascript coding skills came through a much more professional context though, so I'm better at being a nice guy and writing clean code than anything else. <span id="continue-reading"></span></p>
+<p>Being given the task to put aside the code design principles I stand up for
+to make room for a greatest-result-with-least-code approach was one of the
+funniest and most addictive things that happened in my course of learning.
+I don't really think I did my very best, but I'm happy with it for the time
+being and I hope to submit something much juicier next year.</p>
+<p>I participated in the WebGL compo, which has been introduced this year for
+the first time, along with only
+<a href="http://js1k.com/2014-dragons/demo/1924">four</a>
+<a href="http://js1k.com/2014-dragons/demo/1868">entries</a>
+<a href="http://js1k.com/2014-dragons/demo/1807">other</a>
+<a href="http://js1k.com/2014-dragons/demo/1776">than</a>
+<a href="http://js1k.com/2014-dragons/demo/1910">mine</a>, so five out of about a hundred. I chose to submit in WebGL
+because I'm learning the ropes of 3D *GL programming and wanted to do
+something nice with it; I began writing a GLSL raymarching shader but I
+though it would squeeze some fun out of the thing because of GLSL's inherently
+more rigid and verbose syntax, so I thought I'd do something simpler.</p>
+<p>I wrote <a href="http://js1k.com/2014-dragons/demo/1910">Einstein-Rosen</a>, an &quot;endless&quot; run inside a wireframe tunnel.
+The name is inspired to <a href="http://en.wikipedia.org/wiki/Wormhole">wormholes</a>,
+which have actually not much to share with my code but look like that in
+movies most of the times so I thought maybe that was okay. :D</p>
+<p>I actually spent quite some time in the past couple of months trying to find
+a fitting algorithm to generate a pseudorandom curved path and extrude it to
+a tube geometry. The extrusion was the easy part, but still an interesting
+piece of code so I decided to do the same for JS1k.</p>
+<p>Drawing an OpenGL vertex/index based geometry is quite a boilerplatish feat in
+WebGL, since it requires writing, compiling and linking the shaders, building
+the arrays, converting them to native, bla bla bla you know the drill, so the
+room for manoeuvre is somewhat smaller in 1024b, not counting the
+<a href="http://js1k.com/2014-dragons/shim-webgl.html">shim</a>. Most of my action was
+thus focused towards compromising between code precision and graphical result.</p>
+<p>A blatant example is what I think to be the ugliest perspective matrix ever
+calculated ever (<em>line 28 in the code</em>):</p>
+<pre style="background-color:#2b303b;">
+<span style="font-style:italic;color:#5f697a;">// Ugly hard coded and heavily rounded perspective matrix, good for 16:9
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">unM</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">geUL</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">p</span><span style="color:#abb2bf;">,</span><span style="color:#9acc76;">&#39;m&#39;</span><span style="color:#abb2bf;">),</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">,[</span><span style="color:#db9d63;">-.1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">-.2</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">-1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">-1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">-.1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">]);
+</span></pre>
+<p>I really hope the gods of linear algebra can forgive me and pray for my soul
+to be spared. The thought process that went on for it was something like: &quot;you
+know what, -.100002 isn't that different from -.1 after all&quot;.</p>
+<p>The path function was heavily simplified, too: it is now simply the function
+f : R -&gt; R<sup>3</sup> sending <code>z</code> into <code>(2 sin z, 2 cos z, z)</code> (<em>line 7 in the 
+code</em>). </p>
+<pre style="background-color:#2b303b;">
+<span style="font-style:italic;color:#5f697a;">// x = 2 * sin(z), y = 2 * cos(z)
+</span><span style="color:#cd74e8;">function </span><span style="color:#5cb3fa;">R</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">z</span><span style="color:#abb2bf;">) {
+  </span><span style="color:#cd74e8;">return </span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">2</span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">_</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">O</span><span style="color:#adb7c9;">*z</span><span style="color:#abb2bf;">),</span><span style="color:#db9d63;">2</span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">O</span><span style="color:#adb7c9;">*z</span><span style="color:#abb2bf;">)]
+}
+</span></pre>
+<p>(<code>R</code> in the code does not mean the <code>R</code> set, is just a variable name ;)).
+This was really helpful as it let me do a dirty trick to simulate
+endless running. As some of you might know (not sure how many though, it's
+one of the deepest darkest secrets of mathematics in fact) sin and cos are
+periodic functions. The code responsible of moving the camera through the
+tunnel simply is a function of time. Sure, I could have simply replicated
+the geometry forever, but to be cheap memory-, cpu- and code-length-wise I
+simply computed a geometry long twice the necessary (<em>lines 33 and 
+following</em>), that is 32 units, and computed the z value modulo 16.</p>
+<pre style="background-color:#2b303b;">
+<span style="font-style:italic;color:#5f697a;">// Build the tube geometry
+</span><span style="color:#adb7c9;">s = </span><span style="color:#abb2bf;">[]</span><span style="color:#adb7c9;">, i = </span><span style="color:#abb2bf;">[]</span><span style="color:#adb7c9;">, </span><span style="color:#eb6772;">W </span><span style="color:#adb7c9;">= </span><span style="color:#db9d63;">32</span><span style="color:#adb7c9;">, </span><span style="color:#eb6772;">J</span><span style="color:#adb7c9;">=</span><span style="color:#db9d63;">6.28</span><span style="color:#adb7c9;">/</span><span style="color:#eb6772;">W</span><span style="color:#abb2bf;">;
+</span><span style="color:#cd74e8;">for</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">I </span><span style="color:#adb7c9;">= </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">; </span><span style="color:#eb6772;">I </span><span style="color:#adb7c9;">&lt;= </span><span style="color:#eb6772;">W</span><span style="color:#abb2bf;">; </span><span style="color:#eb6772;">I</span><span style="color:#adb7c9;">++</span><span style="color:#abb2bf;">) { </span><span style="font-style:italic;color:#5f697a;">// 32 skewed cylinders
+  </span><span style="color:#adb7c9;">w = </span><span style="color:#eb6772;">R</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">I</span><span style="color:#abb2bf;">); </span><span style="font-style:italic;color:#5f697a;">// get point
+  </span><span style="color:#cd74e8;">for</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">j = </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">; </span><span style="color:#adb7c9;">j &lt; </span><span style="color:#eb6772;">W</span><span style="color:#abb2bf;">; </span><span style="color:#adb7c9;">j++</span><span style="color:#abb2bf;">) { </span><span style="font-style:italic;color:#5f697a;">// each circle is built with 32 lines
+    </span><span style="color:#eb6772;">s</span><span style="color:#abb2bf;">.</span><span style="color:#5ebfcc;">push</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">J </span><span style="color:#adb7c9;">* j</span><span style="color:#abb2bf;">) </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">w</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">], </span><span style="color:#eb6772;">_</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">J </span><span style="color:#adb7c9;">* j</span><span style="color:#abb2bf;">) </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">w</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">], </span><span style="color:#adb7c9;">- </span><span style="color:#eb6772;">I</span><span style="color:#adb7c9;">/</span><span style="color:#db9d63;">4</span><span style="color:#abb2bf;">) </span><span style="font-style:italic;color:#5f697a;">// a vertex on the circle
+    </span><span style="color:#eb6772;">K</span><span style="color:#adb7c9;">=</span><span style="color:#eb6772;">W</span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">I</span><span style="color:#abb2bf;">;
+    </span><span style="color:#eb6772;">i</span><span style="color:#abb2bf;">.</span><span style="color:#5ebfcc;">push</span><span style="color:#abb2bf;">(
+      </span><span style="color:#eb6772;">K </span><span style="color:#adb7c9;">+ j</span><span style="color:#abb2bf;">,
+      </span><span style="color:#eb6772;">K </span><span style="color:#adb7c9;">+ </span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">j + </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">) </span><span style="color:#adb7c9;">% </span><span style="color:#eb6772;">W</span><span style="color:#abb2bf;">, </span><span style="font-style:italic;color:#5f697a;">// current vertex to next vertex on the circle
+      </span><span style="color:#eb6772;">K </span><span style="color:#adb7c9;">+ j</span><span style="color:#abb2bf;">,
+      </span><span style="color:#eb6772;">K </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">W </span><span style="color:#adb7c9;">+ j </span><span style="font-style:italic;color:#5f697a;">// current vertex to vertex with the same position on the next circle
+    </span><span style="color:#abb2bf;">)
+  } 
+}
+</span></pre>
+<p>This way,
+when I move past 16 units in the z direction, the code automatically jumps
+back to point 0, and being sin and cos periodic they realign perfectly. The
+geometry is twice as long to take into account for the geometry portion you can
+see fading in the distance ahead of you, which must be there when the camera 
+crosses the 16 units point. Lines 58 and 61 to 68 in the code implement this
+behavior via a modelview matrix which is calculated by hand with no frills but
+the simple translation (I also shortened the z axis movement, effectively
+changing the function from <code>(2 sin z, 2 cos z, z)</code> to <code>(.5 sin z, .5 cos z, z)</code>):</p>
+<pre style="background-color:#2b303b;">
+<span style="font-style:italic;color:#5f697a;">// Calculate the point on the curve: divide time by 128 and reduce modulo 16 to loop
+</span><span style="color:#adb7c9;">d=</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">D</span><span style="color:#adb7c9;">/</span><span style="color:#db9d63;">128</span><span style="color:#abb2bf;">)</span><span style="color:#adb7c9;">%</span><span style="color:#db9d63;">16</span><span style="color:#abb2bf;">;
+</span><span style="color:#eb6772;">requestAnimationFrame</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">X</span><span style="color:#abb2bf;">)
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">clear</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">16640</span><span style="color:#abb2bf;">);
+</span><span style="color:#eb6772;">E </span><span style="color:#adb7c9;">= </span><span style="color:#eb6772;">R</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">d</span><span style="color:#abb2bf;">);
+</span><span style="font-style:italic;color:#5f697a;">// Calculate view matrix
+</span><span style="color:#adb7c9;">v = </span><span style="color:#abb2bf;">[
+ </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">,
+ </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">,
+ </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">,
+ </span><span style="color:#adb7c9;">-</span><span style="color:#f0c678;">E</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">], </span><span style="color:#adb7c9;">-</span><span style="color:#f0c678;">E</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">], </span><span style="color:#adb7c9;">d/</span><span style="color:#db9d63;">4</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">1
+</span><span style="color:#abb2bf;">];
+</span></pre>
+<p>The shaders are bare-bone, just projection matrix * modelview matrix * vertex
+position, <code>GL_LINES</code> rendering, and a &quot;fog&quot; shading - actually the color just
+fades towards <code>(0.2, 0.2, 0.2)</code> with the Z value of the vertex.</p>
+<pre style="background-color:#2b303b;">
+<span style="font-style:italic;color:#5f697a;">// vertex shader
+</span><span style="color:#cd74e8;">uniform mat4</span><span style="color:#abb2bf;"> m, v;
+</span><span style="color:#cd74e8;">attribute vec3</span><span style="color:#abb2bf;"> p;
+</span><span style="color:#cd74e8;">varying</span><span style="color:#abb2bf;"> lowp </span><span style="color:#cd74e8;">float</span><span style="color:#abb2bf;"> z;
+
+</span><span style="color:#cd74e8;">void </span><span style="color:#5cb3fa;">main</span><span style="color:#abb2bf;">() { 
+  </span><span style="color:#cd74e8;">vec4</span><span style="color:#abb2bf;"> P </span><span style="color:#adb7c9;">= </span><span style="color:#eb6772;">gl_Position </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> m </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> v </span><span style="color:#adb7c9;">* </span><span style="color:#cd74e8;">vec4</span><span style="color:#abb2bf;">(p, </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">.);
+  z </span><span style="color:#adb7c9;">= </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">. </span><span style="color:#adb7c9;">- </span><span style="color:#5ebfcc;">clamp</span><span style="color:#abb2bf;">(P.</span><span style="color:#eb6772;">z</span><span style="color:#adb7c9;">-</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">5</span><span style="color:#abb2bf;">, .</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">.);
+}
+</span></pre><pre style="background-color:#2b303b;">
+<span style="font-style:italic;color:#5f697a;">// fragment shader
+</span><span style="color:#cd74e8;">varying</span><span style="color:#abb2bf;"> lowp </span><span style="color:#cd74e8;">float</span><span style="color:#abb2bf;"> z;
+
+</span><span style="color:#cd74e8;">void </span><span style="color:#5cb3fa;">main</span><span style="color:#abb2bf;">() { 
+  </span><span style="color:#eb6772;">gl_FragColor </span><span style="color:#adb7c9;">= </span><span style="color:#cd74e8;">vec4</span><span style="color:#abb2bf;">( </span><span style="color:#cd74e8;">vec3</span><span style="color:#abb2bf;">(.</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, z</span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">5</span><span style="color:#abb2bf;">, z), .</span><span style="color:#db9d63;">8</span><span style="color:#abb2bf;">);
+}
+</span></pre>
+<p>The remainder of the code is pretty much clever tricks to reduce the code usage
+to the minimum possible, like the function aliasing on the GL context object
+borrowed from <a href="http://js1k.com/2014-dragons/details/1807">another demo</a>, the
+usage of single name variables, the inlining of as much code as possible, the
+usage of numerical constants instead of GL's verbose stuff like
+<code>GL_COLOR_BUFFER_BIT</code> and so on.  In retrospect, having seen and read other demos
+and post-mortems, I could have done much better to optimize it for
+<a href="iteral.com/jscrush/">JSCrush</a>, but when I wrote the code I didn't know the way
+it compressed the code, I shout out a thank you to all the guys that explained
+it more or less in detail - particularly
+<a href="http://greweb.me/2014/03/panzer-dragoon-1k/">@greweb</a>'s awesome article for an
+awesome demo. I'm not going to go over it, in his article you can find so
+much information I couldn't explain in better terms, so I strongly recommend it.</p>
+<p>So that's that. Hope you liked my work, and hope I'll be able to stay up to
+date with this beautiful world full of Javascript experts producing some of the
+most impressive code I've ever read, while I keep treading the Javascript
+graphics programming world.</p>
+<p>Here is the full, uncompressed code. You can view the compressed version
+directly on <a href="http://js1k.com/2014-dragons/demo/1910">JS1k</a>.</p>
+<pre style="background-color:#2b303b;">
+<span style="font-style:italic;color:#5f697a;">// Shorten GL context function names. Avoided bind()ing since it didn&#39;t produce significant compression.
+</span><span style="color:#cd74e8;">for</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">i in g</span><span style="color:#abb2bf;">) </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">[</span><span style="color:#eb6772;">i</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">match</span><span style="color:#abb2bf;">(</span><span style="color:#5ebfcc;">/</span><span style="color:#cd74e8;">^</span><span style="color:#db9d63;">..</span><span style="color:#adb7c9;">|</span><span style="color:#db9d63;">[A-Z]</span><span style="color:#adb7c9;">|</span><span style="color:#db9d63;">\d\w</span><span style="color:#cd74e8;">$</span><span style="color:#5ebfcc;">/</span><span style="color:#cd74e8;">g</span><span style="color:#abb2bf;">).</span><span style="color:#eb6772;">join</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;&quot;</span><span style="color:#abb2bf;">)]</span><span style="color:#adb7c9;">=</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">[</span><span style="color:#adb7c9;">i</span><span style="color:#abb2bf;">]
+</span><span style="font-style:italic;color:#5f697a;">// Alias sin, cos and pi/8 to single char variables since those come up in a couple of places
+</span><span style="color:#adb7c9;">_=</span><span style="color:#f0c678;">Math</span><span style="color:#abb2bf;">.sin;</span><span style="color:#eb6772;">$</span><span style="color:#adb7c9;">=</span><span style="color:#f0c678;">Math</span><span style="color:#abb2bf;">.cos;</span><span style="color:#eb6772;">O</span><span style="color:#adb7c9;">=</span><span style="color:#f0c678;">Math</span><span style="color:#abb2bf;">.PI</span><span style="color:#adb7c9;">/</span><span style="color:#db9d63;">8</span><span style="color:#abb2bf;">;
+
+</span><span style="font-style:italic;color:#5f697a;">// x = 2 * sin(z), y = 2 * cos(z)
+</span><span style="color:#cd74e8;">function </span><span style="color:#5cb3fa;">R</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">z</span><span style="color:#abb2bf;">) {
+  </span><span style="color:#cd74e8;">return </span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">2</span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">_</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">O</span><span style="color:#adb7c9;">*z</span><span style="color:#abb2bf;">),</span><span style="color:#db9d63;">2</span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">O</span><span style="color:#adb7c9;">*z</span><span style="color:#abb2bf;">)]
+}
+
+</span><span style="font-style:italic;color:#5f697a;">// Compile the shader of source s and type t
+</span><span style="color:#cd74e8;">function </span><span style="color:#5cb3fa;">cS</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">s</span><span style="color:#abb2bf;">, </span><span style="color:#adb7c9;">t</span><span style="color:#abb2bf;">) {
+  </span><span style="color:#adb7c9;">h = </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">crS</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">t</span><span style="color:#abb2bf;">)
+  </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">shS</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">h</span><span style="color:#abb2bf;">, </span><span style="color:#adb7c9;">s</span><span style="color:#abb2bf;">)
+  </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">coS</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">h</span><span style="color:#abb2bf;">)
+  </span><span style="color:#cd74e8;">return </span><span style="color:#adb7c9;">h</span><span style="color:#abb2bf;">;
+}
+
+</span><span style="color:#cd74e8;">var </span><span style="color:#adb7c9;">p = </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">crP</span><span style="color:#abb2bf;">();
+</span><span style="font-style:italic;color:#5f697a;">// Projection matrix * View matrix * point (model matrix is always identity); send the light intensity z to the fragment shader
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">atS</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">p</span><span style="color:#abb2bf;">,</span><span style="color:#eb6772;">cS</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;uniform mat4 m,v;attribute vec3 p;varying lowp float z;void main(){vec4 P=gl_Position=m*v*vec4(p,1.);z=1.-clamp(P.z-.5,.0,1.);}&quot;</span><span style="color:#abb2bf;">,</span><span style="color:#db9d63;">35633</span><span style="color:#abb2bf;">))
+</span><span style="font-style:italic;color:#5f697a;">// Color is rgb(0.0, 0.5, 1.0) * z
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">atS</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">p</span><span style="color:#abb2bf;">,</span><span style="color:#eb6772;">cS</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;varying lowp float z;void main(){gl_FragColor=vec4(vec3(.0,z*.5,z),.8);}&quot;</span><span style="color:#abb2bf;">,</span><span style="color:#db9d63;">35632</span><span style="color:#abb2bf;">))
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">liP</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">p</span><span style="color:#abb2bf;">)
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">usP</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">p</span><span style="color:#abb2bf;">)
+
+</span><span style="font-style:italic;color:#5f697a;">// Ugly hard coded and heavily rounded perspective matrix, good for 16:9
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">unM</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">geUL</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">p</span><span style="color:#abb2bf;">,</span><span style="color:#9acc76;">&#39;m&#39;</span><span style="color:#abb2bf;">),</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">,[</span><span style="color:#db9d63;">-.1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">-.2</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">-1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">-1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">-.1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">]);
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">clC</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">.2</span><span style="color:#abb2bf;">,</span><span style="color:#db9d63;">.2</span><span style="color:#abb2bf;">,</span><span style="color:#db9d63;">.2</span><span style="color:#abb2bf;">,</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">);
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">en</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">2929</span><span style="color:#abb2bf;">);
+
+</span><span style="font-style:italic;color:#5f697a;">// Build the tube geometry
+</span><span style="color:#adb7c9;">s = </span><span style="color:#abb2bf;">[]</span><span style="color:#adb7c9;">, i = </span><span style="color:#abb2bf;">[]</span><span style="color:#adb7c9;">, </span><span style="color:#eb6772;">W </span><span style="color:#adb7c9;">= </span><span style="color:#db9d63;">32</span><span style="color:#adb7c9;">, </span><span style="color:#eb6772;">J</span><span style="color:#adb7c9;">=</span><span style="color:#db9d63;">6.28</span><span style="color:#adb7c9;">/</span><span style="color:#eb6772;">W</span><span style="color:#abb2bf;">;
+</span><span style="color:#cd74e8;">for</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">I </span><span style="color:#adb7c9;">= </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">; </span><span style="color:#eb6772;">I </span><span style="color:#adb7c9;">&lt;= </span><span style="color:#eb6772;">W</span><span style="color:#abb2bf;">; </span><span style="color:#eb6772;">I</span><span style="color:#adb7c9;">++</span><span style="color:#abb2bf;">) { </span><span style="font-style:italic;color:#5f697a;">// 32 skewed cylinders
+  </span><span style="color:#adb7c9;">w = </span><span style="color:#eb6772;">R</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">I</span><span style="color:#abb2bf;">); </span><span style="font-style:italic;color:#5f697a;">// get point
+  </span><span style="color:#cd74e8;">for</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">j = </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">; </span><span style="color:#adb7c9;">j &lt; </span><span style="color:#eb6772;">W</span><span style="color:#abb2bf;">; </span><span style="color:#adb7c9;">j++</span><span style="color:#abb2bf;">) { </span><span style="font-style:italic;color:#5f697a;">// each circle is built with 32 lines
+    </span><span style="color:#eb6772;">s</span><span style="color:#abb2bf;">.</span><span style="color:#5ebfcc;">push</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">J </span><span style="color:#adb7c9;">* j</span><span style="color:#abb2bf;">) </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">w</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">], </span><span style="color:#eb6772;">_</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">J </span><span style="color:#adb7c9;">* j</span><span style="color:#abb2bf;">) </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">w</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">], </span><span style="color:#adb7c9;">- </span><span style="color:#eb6772;">I</span><span style="color:#adb7c9;">/</span><span style="color:#db9d63;">4</span><span style="color:#abb2bf;">) </span><span style="font-style:italic;color:#5f697a;">// a vertex on the circle
+    </span><span style="color:#eb6772;">K</span><span style="color:#adb7c9;">=</span><span style="color:#eb6772;">W</span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">I</span><span style="color:#abb2bf;">;
+    </span><span style="color:#eb6772;">i</span><span style="color:#abb2bf;">.</span><span style="color:#5ebfcc;">push</span><span style="color:#abb2bf;">(
+      </span><span style="color:#eb6772;">K </span><span style="color:#adb7c9;">+ j</span><span style="color:#abb2bf;">,
+      </span><span style="color:#eb6772;">K </span><span style="color:#adb7c9;">+ </span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">j + </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">) </span><span style="color:#adb7c9;">% </span><span style="color:#eb6772;">W</span><span style="color:#abb2bf;">, </span><span style="font-style:italic;color:#5f697a;">// current vertex to next vertex on the circle
+      </span><span style="color:#eb6772;">K </span><span style="color:#adb7c9;">+ j</span><span style="color:#abb2bf;">,
+      </span><span style="color:#eb6772;">K </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">W </span><span style="color:#adb7c9;">+ j </span><span style="font-style:italic;color:#5f697a;">// current vertex to vertex with the same position on the next circle
+    </span><span style="color:#abb2bf;">)
+  } 
+}
+
+</span><span style="font-style:italic;color:#5f697a;">// build vertex and index buffers
+</span><span style="color:#adb7c9;">m = </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">crB</span><span style="color:#abb2bf;">()
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">biB</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">34962</span><span style="color:#abb2bf;">, </span><span style="color:#adb7c9;">m</span><span style="color:#abb2bf;">)
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">buD</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">34962</span><span style="color:#abb2bf;">, </span><span style="color:#adb7c9;">new </span><span style="color:#eb6772;">Float32Array</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">s</span><span style="color:#abb2bf;">), </span><span style="color:#db9d63;">35044</span><span style="color:#abb2bf;">)
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">biB</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">34963</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">crB</span><span style="color:#abb2bf;">())
+</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">buD</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">34963</span><span style="color:#abb2bf;">, </span><span style="color:#adb7c9;">new </span><span style="color:#eb6772;">Uint16Array</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">i</span><span style="color:#abb2bf;">), </span><span style="color:#db9d63;">35044</span><span style="color:#abb2bf;">);
+
+(</span><span style="color:#5cb3fa;">X </span><span style="color:#adb7c9;">= </span><span style="color:#cd74e8;">function</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">D</span><span style="color:#abb2bf;">) {
+
+  </span><span style="font-style:italic;color:#5f697a;">// Calculate the point on the curve: divide time by 128 and reduce modulo 16 to loop
+  </span><span style="color:#adb7c9;">d=</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">D</span><span style="color:#adb7c9;">/</span><span style="color:#db9d63;">128</span><span style="color:#abb2bf;">)</span><span style="color:#adb7c9;">%</span><span style="color:#db9d63;">16</span><span style="color:#abb2bf;">;
+  </span><span style="color:#eb6772;">requestAnimationFrame</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">X</span><span style="color:#abb2bf;">)
+  </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">clear</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">16640</span><span style="color:#abb2bf;">);
+  </span><span style="color:#eb6772;">E </span><span style="color:#adb7c9;">= </span><span style="color:#eb6772;">R</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">d</span><span style="color:#abb2bf;">);
+  </span><span style="font-style:italic;color:#5f697a;">// Calculate view matrix
+  </span><span style="color:#adb7c9;">v = </span><span style="color:#abb2bf;">[
+   </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">,
+   </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">,
+   </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">,
+   </span><span style="color:#adb7c9;">-</span><span style="color:#f0c678;">E</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">], </span><span style="color:#adb7c9;">-</span><span style="color:#f0c678;">E</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">], </span><span style="color:#adb7c9;">d/</span><span style="color:#db9d63;">4</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">1
+  </span><span style="color:#abb2bf;">];
+  </span><span style="font-style:italic;color:#5f697a;">// vertexAttribPointer(getAttribLocation(), 3, FLOAT, uniformMatrix4fv(getUniformLocation(), 0, v), 0, 0)
+  </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">veAP</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">P</span><span style="color:#adb7c9;">=</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">geAL</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">p</span><span style="color:#abb2bf;">,</span><span style="color:#9acc76;">&#39;p&#39;</span><span style="color:#abb2bf;">), </span><span style="color:#db9d63;">3</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">5126</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">unM</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">geUL</span><span style="color:#abb2bf;">(</span><span style="color:#adb7c9;">p</span><span style="color:#abb2bf;">,</span><span style="color:#9acc76;">&#39;v&#39;</span><span style="color:#abb2bf;">),</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">,</span><span style="color:#adb7c9;">v</span><span style="color:#abb2bf;">), </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">);
+  </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">enVAA</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">P</span><span style="color:#abb2bf;">);
+  </span><span style="color:#eb6772;">g</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">drE</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">4096</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">5123</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">);
+
+})()
+</span></pre>
+    </section>
+  </article></div>
+  <div class="row"><div class="column" id="disqus_thread">
+
+  </div></div>
+  <script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'veeenu'; // required: replace example with your forum shortname
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();</script>
+</div>
+
+
+    <script async src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+    <!--<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-40567248-2', 'veeenu.github.io');
+      ga('send', 'pageview');
+    </script>-->
+    <!-- Google Analytics -->
+    <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-40567248-2', 'veeenu.github.io');
+    ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+  </body>
+</html>

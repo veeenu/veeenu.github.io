@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width'>
+    <meta property='og:title' content='I built my own business card raytracer in Rust, because why not'>
+    <meta property='og:type' content='website'>
+    <meta property='og:site_name' content='Andrea Venuta'>
+    <meta property='og:description' content='As you may know, and if you&#x27;re reading this chances are you do, there&#x27;s 
+this post that&#x27;s
+been roaming around for 7 years and periodically resurfaces. It refers to a
+code golfing challenge dating back in 1984, a few years before I was born.
+Its rules asked to build a raytracer in C with certain features and
+functions and shading models. Among those, Andrew Kensler&#x27;s version, checking
+in at 1337 bytes, stood out and became world-wide renowned (for good reasons,
+if you ask me). This was its output.'>
+    <title>I built my own business card raytracer in Rust, because why not</title>
+    <link rel="stylesheet" href="https://veeenu.github.io/skeleton.css" />
+    <link rel="stylesheet" href="https://veeenu.github.io/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"/>
+  </head>
+
+  <body>
+    <header id="menu-header">
+      <a class="image" href="https://veeenu.github.io">
+        <div>
+          <img src="https://veeenu.github.io/me.jpg" alt="Andrea Venuta"/>
+        </div>
+        <span>Andrea Venuta</span>
+      </a>
+      <ul>
+        <li><a href="https://veeenu.github.io">About</a></li>
+        <li><a href="https://veeenu.github.io/blog.html">Blog</a></li>
+      </ul>
+    </header>
+
+    
+<div class="container top-container"><div class="row">
+  <article class="article twelve columns">
+    <header>
+      <h1>I built my own business card raytracer in Rust, because why not</h1>
+      <small>
+        <p>
+          <time>Wednesday, 29 Apr 2020</time>
+          &middot;
+          <em>
+            Reading time:
+            
+              17 mins
+            
+          </em>
+        </p>
+      </small>
+    </header>
+    <section>
+      <p>As you may know, and if you're reading this chances are you do, there's 
+<a href="https://fabiensanglard.net/rayTracing_back_of_business_card/">this post</a> that's
+been roaming around for 7 years and periodically resurfaces. It refers to a
+code golfing challenge dating back in 1984, a few years before I was born.
+Its rules asked to build a raytracer in C with certain features and
+functions and shading models. Among those, Andrew Kensler's version, checking
+in at 1337 bytes, stood out and became world-wide renowned (for good reasons,
+if you ask me). This was its output. <span id="continue-reading"></span></p>
+<p><img src="https://fabiensanglard.net/rayTracing_back_of_business_card/minray.png" alt="Andrew Kensler's business card raytracer" /></p>
+<p>So, last time I found it on the Hackernews frontpage, I just left it open in
+a tab for weeks on end. You know, just in case, like one always does. That is,
+until one fine night the pointless side project fairy visited me in my sleep and
+whispered in my ear.</p>
+<p>The following morning I opened my eyes and knew what I had to do.</p>
+<p>I have been wanting to get back into graphics programming for quite a while now,
+but job duties and personal commitments kept me away from it; besides, as I'm
+in the process of switching careers, it is high time I polished my professional
+appearance and got myself a proper business card (by the way, at the time of
+writing this, <a href="/cv.pdf">I'm still open to offers</a>, nudge nudge, wink wink).</p>
+<h2 id="and-here-it-is">And here it is</h2>
+<p><img src="/data/2020-04-29/render.png" alt="The raytracer's rendering" /></p>
+<pre style="background-color:#2b303b;">
+<span style="color:#abb2bf;">use std::ops::*;type F=f64;#[derive(Clone,Copy)]struct V(F,F
+,F);#[derive(Clone,Copy)]struct M(F,F,F,F,F,F,F,F,F,F,F,F,F,
+F,F,F);fn a(v:V)-&gt;V{V(v.0 .abs(),v.1.abs(),v.2.abs())}fn z(l
+:V,r:V)-&gt;F{(l.0*r.0+l.1*r.1+l.2*r.2).sqrt()}fn T(v:V,f:F)-&gt;V
+{V(v.0*f,v.1*f,v.2*f)}impl Add&lt;V&gt;for V{type Output=V;fn add(
+self,r:V)-&gt;V{V(self.0+r.0, self.1+r.1,self.2+r.2)}}impl Neg
+for V{type Output=V;fn neg(self)-&gt;V{V(-self.0,-self.1,-self.
+2)}}impl Mul&lt;V&gt;for M{type Output=V;fn mul(self,r:V)-&gt;V{let(V
+(x,y,z),M(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p))=(r,self);let w=d
+*x+h*y+l*z+p;T(V(a*x+e*y+i*z+m,b*x+f*y+j*z+n,c*x+g*y+k*z+o),
+1./w)}}fn m(l:V,r:V)-&gt;V{V(F::max(l.0,r.0),F::max(l.1,r.1),F
+::max(l.2,r.2))}fn b(r:V,p: V,s:V)-&gt;F{let d=a(r+-p)+-s;let n
+=F::max(d.0,F::max(d.1,d.2));F::min(n,0.)+(|v|z(v,v))(m(d,V(
+0.,0.,0.)))}fn c(r:V,h:F,d:F)-&gt;F{let p=a(r);let(x,y)=((p.0*p
+.0+p.2*p.2).sqrt().abs()-h,p.1-d);let(z,w)=(F::max(x,0.),F::
+max(y,0.));F::min(F::max(x,y),0.)+(z*z+w*w).sqrt()}fn d(r:V)
+-&gt;(F,u64){let z=0.5;let(y,w)=(0.707,0.866);let(a,d,e,f,g,h,i
+,j,k,l)=(M(0.5,-w,0.,0.,w,0.5,0.,0.,0.,0.,1.,0.,-1.,0.,0.,1.
+),M(-0.5,-w,0.,0.,w,-0.5,0.,0.,0.,0.,1.,0.,-1.,0.,0.,1.),M(
+1.,0.,0.,0.,0.,0.,-1.,0.,0.,1.,0.,-0.,0.,0.,0.,1.),M(1.,0.,
+0.,0.,0.,1.,0.,0.,0.,0.,1.,0.,1.5,0.5,0.,1.),M(1.,0.,0.,0.,
+0.,0.,-1.,0.,0.,1.,0.,-0.,0.,0.,0.,1.),M(y,-0.,y,0.,0.,1.,0.
+,0.,-y,0.,y,0.,-0.212,0.,-0.5,1.),M(1.,0.,0.,0.,0.,1.,0.,0.,
+0.,0.,1.,0.,0.,0.,0.,1.),M(1.,0.,0.,0.,0.,1.,0.,0.,0.,0.,1.,
+0.,-1.5,0.,0.,1.),M(1.,0.,0.,0.,0.,-1.,-0.,0.,0.,0.,-1.,0.,-
+0.,0.,0.,1.),M(1.,0.,0.,0.,0.,1.,0.,0.,0.,0.,1.,0.,-3.,0.,0.
+,1.));let(u,s,o)=(|a,b|F::min(a,b),|a:F,b|F::max(-a,b),i*(g*
+r));let(n,p,q,r)=(f*r,h*o,j*o,l*(k*o));[(u(u(b(a*n,V(0.,0.,
+0.),V(1.,0.1,z)),b(d*n,V(0.,0.,0.),V(1.,0.1,z))),c(e*n,0.1,z
+)),1),(u(s(s(b (o,V(0.5,0.,-0.1),V(0.5,z*2.,0.2)),b(p,V(0.,
+0.,0.),V(0.2,z*2.,0.2))),s(c(o,0.4,z*2.),c(o,0.6,z))),b(o,V(
+0.,0.,0.),V(0.5,z,0.1))),2),(u(b(q,V(0.5,0.,0.3),V(0.1,z,0.3
+)),u(b(q,V(-0.5,0.,0.),V(0.1,z,0.6)),s(b(q,V(0.,0.,0.6),V(
+0.6,z*2.,0.6)),s(c(q,0.4,z*2.),c(q,0.6,z))))),3),(u(b(r,V(-
+0.5,0.,0.3),V(0.1,z,0.3)),u(b(r,V(0.5,0.,0.),V(0.1,z,0.6)),s
+(b(r,V(0.,0.,0.6),V(0.6,z*2.,0.6)),s(c(r,0.4,z*2.),c(r,0.6,z
+))))),4)].iter().fold((6.,0),|t,o|if t.0&lt;=o.0{t}else{*o})}fn
+i(e:V,i:V)-&gt;(F,u64){let(mut f,mut g,mut t)=(0.002,0.,(-1.,0)
+);for _ in 0..100{if f&lt;0.001||g&gt;30.{break}t=d(e+T(i,g));f=t.
+0;g+=t.0;}if g&lt;30.{(g,t.1)}else{(30.,0)}}fn r(x:u64,y:u64)-&gt;
+V{let(p,o,t,n)=(((-1280.+x as F*2.)/720.,(-720.+y as F*2.)/
+720.),V(3.,2.,4.),V(1.25,0.,0.),|v:V|T(v,1./z(v,v)));let e={
+let(x,w)=(|l:V,r:V|V(l.1*r.2-l.2*r.1,l.2*r.0-l.0*r.2,l.0*r.1
+-l.1*r.0),n(t+-o));let u=n(x(w,V(0.,1.,0.)));let v=n(x(u,w))
+;M(u.0,v.0,w.0,0.,u.1,v.1,w.1,0.,u.2,v.2,w.2,0.,0.,0.,0.,1.)
+};let q=n(e*V(p.0,p.1,2.));let t=i(o,q);let h=o+T(q,t.0);let
+m={let(x,y,z,e)=(V(0.001,0.,0.),V(0.,0.001,0.),V(0.,0.,0.001
+),d(h).0);n(V(d(h+x).0-e,d(h+y).0-e,d(h+z).0-e))};let l=F::
+max(0.1,(|h:V,m|F::max(0.,z(n(V(4.,2.,2.)+-h),m)))(h,m));T(
+match t.1{1=&gt;V(0.024,0.32,0.26),2=&gt;V(0.33,0.44,0.27),3=&gt;V(
+0.4,0.61,0.37),4=&gt;V(0.58,0.75,0.46),_=&gt;V(0.,0.,0.),},l*255.)
+}fn main(){print!(&quot;P3 1280 720 255 &quot;);for y in(1..=720).rev(
+){for x in 0..1280{let V(a,b,c)=r(x,y);print!(
+&quot;{:.0} {:.0} {:.0} &quot;,a,b,c);}}} // bc &gt; venu.ppm
+</span></pre>
+<p>Granted, it's not as visually fancy as Kensler's version, nor particularly good
+looking. But it gets the job done, and it has allowed me to experiment on a
+number of techniques. At 3306 characters, it's also considerably beefier. You
+can find the full code of my version, but in a much more tolerable shape,
+<a href="/data/2020-04-29/main_full.rs">here</a>.</p>
+<p>The general idea was sourced from <a href="https://www.shadertoy.com/view/Xl2XWt">this nice ShaderToy</a>
+which has everything thoroughy explained. I had to of course give the concepts
+a nice twist. For starters, that's GLSL code: it has, among the others,
+all the primitives for manipulating vectors and matrices -- a luxury that
+plain Rust does not offer me. Using external crates sounded a bit like
+cheating, so I chose not to do that.</p>
+<h3 id="vec3">Vec3</h3>
+<p>First thing I did, then, was to reimplement whatever I needed of said algebra
+functions. This amounts to operations on 3-vectors and 4-matrices used for
+transformations.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#cd74e8;">type </span><span style="color:#abb2bf;">f </span><span style="color:#adb7c9;">= </span><span style="color:#cd74e8;">f64</span><span style="color:#abb2bf;">;
+#[</span><span style="color:#eb6772;">derive</span><span style="color:#abb2bf;">(Clone, Copy, Debug)]
+</span><span style="color:#cd74e8;">struct </span><span style="color:#abb2bf;">Vec3(f, f, f);
+
+</span><span style="color:#cd74e8;">impl </span><span style="color:#abb2bf;">Vec3 {
+  </span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">length</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">) -&gt; f {
+    (</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">* </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">* </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">* </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">2</span><span style="color:#abb2bf;">).</span><span style="color:#5ebfcc;">sqrt</span><span style="color:#abb2bf;">()
+  }
+
+  </span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">abs</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">) -&gt; Vec3 {
+    Vec3(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">0.</span><span style="color:#5ebfcc;">abs</span><span style="color:#abb2bf;">(), </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">1.</span><span style="color:#5ebfcc;">abs</span><span style="color:#abb2bf;">(), </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">2.</span><span style="color:#5ebfcc;">abs</span><span style="color:#abb2bf;">())
+  }
+
+  </span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">normal</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">) -&gt; Vec3 {
+    </span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> l </span><span style="color:#adb7c9;">= </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#5ebfcc;">length</span><span style="color:#abb2bf;">();
+    Vec3(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">/</span><span style="color:#abb2bf;"> l, </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">/</span><span style="color:#abb2bf;"> l, </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">/</span><span style="color:#abb2bf;"> l)
+  }
+
+  </span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">cross</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">rhs</span><span style="color:#abb2bf;">: Vec3) -&gt; Vec3 {
+    Vec3(
+      </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">- </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">,
+      </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">- </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">2</span><span style="color:#abb2bf;">,
+      </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">- </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">0
+    </span><span style="color:#abb2bf;">)
+  }
+
+  </span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">dot</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">rhs</span><span style="color:#abb2bf;">: Vec3) -&gt; f {
+    (</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">2</span><span style="color:#abb2bf;">).</span><span style="color:#5ebfcc;">sqrt</span><span style="color:#abb2bf;">()
+  }
+}
+</span></pre>
+<p>This is a bit verbose, but these operations appear in a lot of places, so
+gathering them somewhere is bound to save me some space later on. Operations
+like the dot product could be put in an <code>impl</code> block, where you have to wrangle
+with the <code>self</code> argument -- yikes! 4 unavoidable characters every single time!
+A better option, if less idiomatic, is to simply write a regular <code>fn</code> with
+one-character argument names (nice and comprehensible!). This saves a lot of
+bytes:</p>
+<pre style="background-color:#2b303b;">
+<span style="font-style:italic;color:#5f697a;">// impl version, more chars
+</span><span style="color:#cd74e8;">impl </span><span style="color:#abb2bf;">Vec3 {
+  </span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">dot</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">r</span><span style="color:#abb2bf;">: Vec3) -&gt; f {
+    (</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> r.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> r.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> r.</span><span style="color:#db9d63;">2</span><span style="color:#abb2bf;">).</span><span style="color:#5ebfcc;">sqrt</span><span style="color:#abb2bf;">()
+  }
+}
+
+v.</span><span style="color:#5ebfcc;">dot</span><span style="color:#abb2bf;">(r)
+
+</span><span style="font-style:italic;color:#5f697a;">// fn version, less chars
+</span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">dot</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">l</span><span style="color:#abb2bf;">: Vec3, </span><span style="color:#eb6772;">r</span><span style="color:#abb2bf;">: Vec3) -&gt; f {
+  (l.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> r.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">+</span><span style="color:#abb2bf;"> l.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> r.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">+</span><span style="color:#abb2bf;"> l.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> r.</span><span style="color:#db9d63;">2</span><span style="color:#abb2bf;">).</span><span style="color:#5ebfcc;">sqrt</span><span style="color:#abb2bf;">()
+}
+
+</span><span style="color:#5ebfcc;">dot</span><span style="color:#abb2bf;">(v,r) </span><span style="font-style:italic;color:#5f697a;">// same number of chars
+</span></pre>
+<p>Another important thing was deciding what to do with the basic operations.
+Those are used a huge number of times in the code, but the trait syntax is very
+verbose; is all of this typing worth it?</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#cd74e8;">impl </span><span style="color:#abb2bf;">Add&lt;Vec3&gt; </span><span style="color:#cd74e8;">for </span><span style="color:#abb2bf;">Vec3 {
+  </span><span style="color:#cd74e8;">type </span><span style="color:#abb2bf;">Output </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> Vec3;
+  </span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">add</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">rhs</span><span style="color:#abb2bf;">: Vec3) -&gt; Vec3 {
+    Vec3(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">+</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">+</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">+</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">2</span><span style="color:#abb2bf;">)
+  }
+}
+
+</span><span style="color:#cd74e8;">impl </span><span style="color:#abb2bf;">Sub&lt;Vec3&gt; </span><span style="color:#cd74e8;">for </span><span style="color:#abb2bf;">Vec3 {
+  </span><span style="color:#cd74e8;">type </span><span style="color:#abb2bf;">Output </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> Vec3;
+  </span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">sub</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">rhs</span><span style="color:#abb2bf;">: Vec3) -&gt; Vec3 {
+    Vec3(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">-</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">-</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">-</span><span style="color:#abb2bf;"> rhs.</span><span style="color:#db9d63;">2</span><span style="color:#abb2bf;">)
+  }
+}
+
+</span><span style="color:#cd74e8;">impl </span><span style="color:#abb2bf;">Mul&lt;f&gt; </span><span style="color:#cd74e8;">for </span><span style="color:#abb2bf;">Vec3 {
+  </span><span style="color:#cd74e8;">type </span><span style="color:#abb2bf;">Output </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> Vec3;
+  </span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">mul</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">rhs</span><span style="color:#abb2bf;">: f) -&gt; Vec3 {
+    Vec3(</span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs, </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs, </span><span style="color:#eb6772;">self</span><span style="color:#abb2bf;">.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> rhs)
+  }
+}
+</span></pre>
+<p>Turns out, it is:</p>
+<pre style="background-color:#2b303b;">
+<span style="font-style:italic;color:#5f697a;">// std::ops traits
+</span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> v </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> a</span><span style="color:#adb7c9;">+</span><span style="color:#abb2bf;">b</span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;">c;
+</span><span style="font-style:italic;color:#5f697a;">// one-word functions
+</span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> v </span><span style="color:#adb7c9;">= </span><span style="color:#5ebfcc;">s</span><span style="color:#abb2bf;">(</span><span style="color:#5ebfcc;">m</span><span style="color:#abb2bf;">(b,c),a);
+</span></pre>
+<p>That's around double the characters, and for two simple operations! So paying
+the cost of implementing operation traits is definitely worth it when they are
+going to be used that many times.</p>
+<p>A small note on this: I ended up saving a bunch of characters by not
+implementing <code>Sub&lt;Vec3&gt; for Vec3</code>, and going for <code>Neg for Vec3</code> instead. This
+saved me from having to type all the arguments out of <code>rhs</code>, at the cost of
+specifying subtractions as <code>a + -b</code> instead of simply <code>a - b</code>. Again, the
+cost of an extra + in some places was worth it in the end, as I had relatively
+fewer subtractions than additions. I wonder: could it be a good idea for
+the <code>ops</code> trait to have <code>Sub&lt;B: Neg&gt; for A: Add</code> auto-implemented as
+<code>self + (-rhs)</code>?</p>
+<h3 id="mat4">Mat4</h3>
+<pre style="background-color:#2b303b;">
+<span style="color:#abb2bf;">#[</span><span style="color:#eb6772;">derive</span><span style="color:#abb2bf;">(Clone, Copy, Debug)]
+</span><span style="color:#cd74e8;">struct </span><span style="color:#abb2bf;">Mat4(
+  f, f, f, f,
+  f, f, f, f,
+  f, f, f, f,
+  f, f, f, f,
+);
+</span></pre>
+<p>At first, I implemented a full-fledged linear transform set of operations on
+<code>Mat4</code>, so that I could build the transformations on the fly. Then I realized I
+did not really need to do that -- a <script type="math/tex">R_{4\times4} \times R_4 \to R_4</script> (note:
+vectors are actually in <script type="math/tex">R_3</script> but augmented with a 1; it <a href="https://en.wikipedia.org/wiki/Affine_transformation#Augmented_matrix">works like that</a>)
+multiplication function, aptly named something clear and immediate to
+understand like <code>Z</code> or <code>q</code> or <code>m</code>, would have been more than enough to do
+whatever I needed to do after actually hardcoding the necessary
+transformation matrices.</p>
+<h3 id="distance-functions">Distance functions</h3>
+<p>The overall idea of raytracing distance fields is to define some function
+that can tell me how distant I am from the outer boundary of some object. For
+example, if I have a sphere of radius 5 located at <code>(0, 0, 10)</code> and cast a
+ray starting from the origin, the distance will be:</p>
+<ul>
+<li>positive along the ray that goes from <code>(0, 0, 0)</code> to <code>(0, 0, 5)</code>;</li>
+<li>exactly zero in <code>(0, 0, 5)</code>;</li>
+<li>negative from there to <code>(0, 0, 15)</code>;</li>
+<li>zero there;</li>
+<li>and then again positive onwards.</li>
+</ul>
+<p>Thus, negative or zero values for a given point means I have hit
+something. Turns out, a lot of these functions can be represented with closed
+form vector algebra (check <a href="https://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm">Inigo Quilez's comprehensive list</a>).</p>
+<p>From there, for every ray cast, I can pick the closest SDF solid by marching
+along the ray and stopping as soon as one of the SDFs returns zero or
+negative distance. Furthermore, I can pair an identifier that represents the
+object to each SDF function call. This way I can apply different shading
+rules (a blue sphere, a red box).</p>
+<p>A super interesting thing: we aren't limited to primitive shapes, but we can
+play a lot with Boolean algebra by doing intersections, subtractions and unions,
+and even more complex stuff. But I was content with the basics, and ended up
+only needing a box function, a cylinder function and the base Boolean algebra:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">op_union</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">a</span><span style="color:#abb2bf;">: f, </span><span style="color:#eb6772;">b</span><span style="color:#abb2bf;">: f) -&gt; f {
+  f::min(a, b)
+}
+
+</span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">op_subtraction</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">src</span><span style="color:#abb2bf;">: f, </span><span style="color:#eb6772;">dest</span><span style="color:#abb2bf;">: f) -&gt; f {
+  f::max(</span><span style="color:#adb7c9;">-</span><span style="color:#abb2bf;">src, dest)
+}
+
+</span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">op_intersection</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">src</span><span style="color:#abb2bf;">: f, </span><span style="color:#eb6772;">dest</span><span style="color:#abb2bf;">: f) -&gt; f {
+  f::max(src, dest)
+}
+
+</span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">sdf_box</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">ray</span><span style="color:#abb2bf;">: Vec3, </span><span style="color:#eb6772;">pos</span><span style="color:#abb2bf;">: Vec3, </span><span style="color:#eb6772;">size</span><span style="color:#abb2bf;">: Vec3) -&gt; f {
+  </span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> adj </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> ray </span><span style="color:#adb7c9;">-</span><span style="color:#abb2bf;"> pos;
+  </span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> dist_vec </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> adj.</span><span style="color:#5ebfcc;">abs</span><span style="color:#abb2bf;">() </span><span style="color:#adb7c9;">-</span><span style="color:#abb2bf;"> size;
+  </span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> max_dist </span><span style="color:#adb7c9;">= </span><span style="color:#abb2bf;">f::max(dist_vec.</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">, f::max(dist_vec.</span><span style="color:#db9d63;">1</span><span style="color:#abb2bf;">, dist_vec.</span><span style="color:#db9d63;">2</span><span style="color:#abb2bf;">));
+  </span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> box_dist </span><span style="color:#adb7c9;">= </span><span style="color:#abb2bf;">f::min(max_dist, </span><span style="color:#db9d63;">0.</span><span style="color:#abb2bf;">) </span><span style="color:#adb7c9;">+ </span><span style="color:#5ebfcc;">max</span><span style="color:#abb2bf;">(dist_vec, Vec3(</span><span style="color:#db9d63;">0.</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0.</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">0.</span><span style="color:#abb2bf;">)).</span><span style="color:#5ebfcc;">length</span><span style="color:#abb2bf;">();
+
+  box_dist
+}
+
+</span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">sdf_cyl</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">ray</span><span style="color:#abb2bf;">: Vec3, </span><span style="color:#eb6772;">h</span><span style="color:#abb2bf;">: f, </span><span style="color:#eb6772;">r</span><span style="color:#abb2bf;">: f) -&gt; f {
+  </span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> p </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> ray.</span><span style="color:#5ebfcc;">abs</span><span style="color:#abb2bf;">();
+  </span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> x </span><span style="color:#adb7c9;">= </span><span style="color:#abb2bf;">(p.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> p.</span><span style="color:#db9d63;">0 </span><span style="color:#adb7c9;">+</span><span style="color:#abb2bf;"> p.</span><span style="color:#db9d63;">2 </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> p.</span><span style="color:#db9d63;">2</span><span style="color:#abb2bf;">).</span><span style="color:#5ebfcc;">sqrt</span><span style="color:#abb2bf;">().</span><span style="color:#5ebfcc;">abs</span><span style="color:#abb2bf;">() </span><span style="color:#adb7c9;">-</span><span style="color:#abb2bf;"> h;
+  </span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> y </span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;"> p.</span><span style="color:#db9d63;">1 </span><span style="color:#adb7c9;">-</span><span style="color:#abb2bf;"> r;
+  </span><span style="color:#cd74e8;">let </span><span style="color:#abb2bf;">(cx, cy) </span><span style="color:#adb7c9;">= </span><span style="color:#abb2bf;">(f::max(x, </span><span style="color:#db9d63;">0.</span><span style="color:#abb2bf;">), f::max(y, </span><span style="color:#db9d63;">0.</span><span style="color:#abb2bf;">));
+  f::min(f::max(x, y), </span><span style="color:#db9d63;">0.</span><span style="color:#abb2bf;">) </span><span style="color:#adb7c9;">+ </span><span style="color:#abb2bf;">(cx </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> cx </span><span style="color:#adb7c9;">+</span><span style="color:#abb2bf;"> cy </span><span style="color:#adb7c9;">*</span><span style="color:#abb2bf;"> cy).</span><span style="color:#5ebfcc;">sqrt</span><span style="color:#abb2bf;">()
+}
+</span></pre>
+<p>I made the <code>V</code> by intersecting one box rotated counterclockwise, one box
+rotated clockwise, and one cylinder at the intersection of the two, to make a
+rounded bottom. The <code>E</code> was reasonably more complex, so I'll let a picture
+speak in my stead, as drawing that is what I actually needed to do to figure
+it out in the first place:</p>
+<p><img src="/data/2020-04-29/e.jpg" alt="E" /></p>
+<p>A tall box on the left, a shorter box on the right, and an arc made by
+subtracting a small cylinder from a larger one, and there you have it: the <code>N</code>,
+much simpler (I think you can imagine the shapes by now if you scroll up to
+the rendering). The <code>U</code> was made in the same way but upside down. I've seen
+better thought-out font designs out there, I must admit, but hey, we all have
+to start somewhere.</p>
+<h3 id="a-few-more-optimizations">A few more optimizations</h3>
+<p>Past a couple <code>let</code> statements, it is more convenient to exploit tuple
+expansion to save space:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> a </span><span style="color:#adb7c9;">= </span><span style="color:#db9d63;">2.</span><span style="color:#abb2bf;">;
+</span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> b </span><span style="color:#adb7c9;">= </span><span style="color:#db9d63;">3.</span><span style="color:#abb2bf;">;
+</span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;"> c </span><span style="color:#adb7c9;">= </span><span style="color:#db9d63;">4.</span><span style="color:#abb2bf;">;
+
+</span><span style="font-style:italic;color:#5f697a;">// becomes
+</span><span style="color:#cd74e8;">let</span><span style="color:#abb2bf;">(a,b,c) </span><span style="color:#adb7c9;">= </span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">2.</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">3.</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">4.</span><span style="color:#abb2bf;">);
+</span></pre>
+<p>Clearly this is not applicable in places where I need the output of a previous
+computation, as the result of an expression is not immediately visible in the
+same expression:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#cd74e8;">let</span><span style="color:#abb2bf;">(a,b,c) </span><span style="color:#adb7c9;">= </span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">2.</span><span style="color:#abb2bf;">, a </span><span style="color:#adb7c9;">+ </span><span style="color:#db9d63;">1.</span><span style="color:#abb2bf;">, b </span><span style="color:#adb7c9;">+ </span><span style="color:#db9d63;">1.</span><span style="color:#abb2bf;">); </span><span style="font-style:italic;color:#5f697a;">// NOPE!
+</span></pre>
+<p>Expanding the tuple also allows to exploit the whitespace next to <code>let</code>. It's
+not much, but one byte here, one byte there, I overall ended up saving upwards
+of 2000 characters.</p>
+<p>If I had a function used only inside of some other function, but which was too
+bytes-expensive to inline, I replaced its module-level definition with a
+closure. For example, I only had to do Boolean algebra in one place, so:</p>
+<pre style="background-color:#2b303b;">
+<span style="font-style:italic;color:#5f697a;">// op_subtraction
+</span><span style="color:#cd74e8;">fn </span><span style="color:#5cb3fa;">s</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">s</span><span style="color:#abb2bf;">: f, </span><span style="color:#eb6772;">d</span><span style="color:#abb2bf;">: f) -&gt; f {
+  f::max(</span><span style="color:#adb7c9;">-</span><span style="color:#abb2bf;">s, d)
+}
+</span><span style="font-style:italic;color:#5f697a;">// becomes
+</span><span style="color:#adb7c9;">|</span><span style="color:#abb2bf;">s,d</span><span style="color:#adb7c9;">|</span><span style="color:#abb2bf;">f::max(</span><span style="color:#adb7c9;">-</span><span style="color:#abb2bf;">s,d)
+</span></pre><h3 id="conclusions">Conclusions</h3>
+<p>And now for something completely different -- I want to talk about what doing
+this kind of things feels like. It bears repeating <a href="/2014/04/07/js1k-2014-post-mortem.html">what I said a while ago</a>:
+writing the super-clean, well indented, well commented, well-architected full
+stack application with bells, whistles, ironed shirt and firm handshake is a
+completely different experience from doing this kind of thing. It feels much
+more like exploratory data analysis, as it is much harder to fully grasp the
+hierarchy of the code when you're purposefully trying to sacrifice all the
+best practices you've learned in your career upon the altar of small code.
+Much more so when you're dabbling in math-heavy techniques such as
+raytracing, which would benefit greatly from structure and abstractions. I
+believe my code could be much, much terser than that. But with none of the
+usual intellectual crutches I rely upon, with the passing of time it felt
+like any change had harder and harder consequences to predict, and it was
+harder and harder to evaluate whether I was saving or wasting characters.</p>
+<p>At the end of the day, the frustration of not being able to figure stuff out is
+paid off many times over by the jolt of satisfaction you get when you finally
+do, and all of that has a constant backdrop of adrenaline from attempting any of
+the billion ideas you come up with (and can't look up on StackOverflow) to try
+to solve stuff.</p>
+<p>Anyway, I'm dr. Venuta, glad to meet you!</p>
+<p><img src="/data/2020-04-29/bcard.png" alt="Business card" /></p>
+<p>I spent way more time than I think is reasonable on this small piece of code;
+but then again, I spend way more time than I think is reasonable on videogames
+as well. And I regret neither: </p>
+<blockquote>
+<p>Time you enjoy wasting is not wasted time<br/>
+And with strange aeons even time can waste time<br/>
+-- <em>Abdul Alhazprocrastinated</em>, iirc.</p>
+</blockquote>
+
+    </section>
+  </article></div>
+  <div class="row"><div class="column" id="disqus_thread">
+
+  </div></div>
+  <script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+  var disqus_shortname = 'veeenu'; // required: replace example with your forum shortname
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();</script>
+</div>
+
+
+    <script async src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+    <!--<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-40567248-2', 'veeenu.github.io');
+      ga('send', 'pageview');
+    </script>-->
+    <!-- Google Analytics -->
+    <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-40567248-2', 'veeenu.github.io');
+    ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+  </body>
+</html>
