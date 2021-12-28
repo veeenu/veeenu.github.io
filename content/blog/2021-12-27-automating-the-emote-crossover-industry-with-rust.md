@@ -4,8 +4,6 @@ title = "Automating the Emote Crossover industry with Rust"
 aliases = ["/2021/12/27/automating-the-emote-crossover-industry-with-rust.html"]
 +++
 
-<script src="bootstrap.js"></script>
-
 In this post, I will discuss advanced computer vision and statistical techniques
 at the service of what is arguably one of the most important aspects of social
 life during a global pandemic: silly emotes. <!-- more -->
@@ -80,15 +78,13 @@ it around the mean of the corresponding channel in the _source_ image, and scale
 it by the quotient of the former and latter channel's standard deviation.
 In RGB space, this would mean:
 
-{% tex(mode='display') %}
+$$
 R_t^* = (R_t - \mathbb{E}(R_t)) \frac{\sigma(R_s)}{\sigma(R_t)} + \mathbb{E}(R_s)
-{% end %}
-{% tex(mode='display') %}
+$$ $$
 G_t^* = (G_t - \mathbb{E}(G_t)) \frac{\sigma(G_s)}{\sigma(G_t)} + \mathbb{E}(G_s)
-{% end %}
-{% tex(mode='display') %}
+$$ $$
 B_t^* = (B_t - \mathbb{E}(B_t)) \frac{\sigma(B_s)}{\sigma(B_t)} + \mathbb{E}(B_s)
-{% end %}
+$$
 
 Without going into too much detail, the [XYZ][xyz] color space works pretty
 okay for our use case, so we don't really need to convert all the way to the
@@ -117,8 +113,8 @@ rustup default nightly
 
 In most pouplar image formats, pixel values are usually stored as an array of
 four 8 bit integers, one per channel; hence, each channel has values ranging
-from 0 to 255. We want to map those to the real-valued {% tex() %} [0, 1] {% end
-%} interval because it's more comfy to use. Here's how:
+from 0 to 255. We want to map those to the real-valued $[0, 1]$ interval because
+it's more comfy to use. Here's how:
 
 ```rust
 pub(crate) fn bytes2floats(rgba: [u8; 4]) -> [f32; 4] {
@@ -212,17 +208,17 @@ and [FrankerZ][frankerz] has a part white, part brown head.
 
 The intuitive concept of "FrankerZ is made of a white part and a brown part"
 can be modeled with the statistical technique of [clustering][clustering].
-Clustering algorithms take points in an {% tex() %} N {% end %}-dimensional
-vector space and arrange them in {% tex() %} K {% end %} groups according
+Clustering algorithms take points in an $N$-dimensional
+vector space and arrange them in $K$ groups according
 to a given measure of similarity. In a color space, points that are [close
 together][eucliddist] translate to colors that are similar to each other,
 so clustering pixels of an image according to their closeness means that we can
-build {% tex() %} K {% end %} groups of pixels of similar colors.
+build $K$ groups of pixels of similar colors.
 
 A very popular clustering algorithm is [K-means][kmeans]. It is an iterative
-algorithm that partitions our data points in {% tex() %} K {% end %} groups, and at each iteration
+algorithm that partitions our data points in $K$ groups, and at each iteration
 the variance in each group decreases towards a local minimum. We start with an
-initial estimation of {% tex() %} K {% end %} *centroids*, one per group. At each step, we first
+initial estimation of $K$ *centroids*, one per group. At each step, we first
 assign each point to the group of its closest centroid, and then we update the
 group's centroid to be the *mean* of the points currently belonging to it.
 
@@ -231,9 +227,9 @@ group's centroid to be the *mean* of the points currently belonging to it.
 The algorithm in Rust looks very nice and concise, and it is also reasonably
 fast, if I say so myself! Again, we leverage all the compile time computation we
 can: we use [const generics][constgenerics] so we can implement the algorithm
-for arbitrary-sized vector spaces and arbitrary number of partitions {% tex()
-%}K {% end %} with constants instead of variables. This makes the optimizer
-pretty happy because it can make all sorts of assumptions.
+for arbitrary-sized vector spaces and arbitrary number of partitions $K$ with
+constants instead of variables. This makes the optimizer pretty happy because it
+can make all sorts of assumptions.
 
 We also use the `array_zip` unstable feature in some spots. This allows us to
 avoid the `.iter()` notation in some awkward spots and supposedly also makes the
@@ -296,13 +292,12 @@ pub(crate) fn k_means<const K: usize, const D: usize, const ITERS: usize>(
 ```
 
 Let's go over this code step by step. First of all, we define a data structure
-that will be the output of our computation. For finding {% tex() %} K {% end
-%} means in a {% tex() %} D {% end %}-dimensional space, the function will
-return an instance of `KMeans<K, D>`. For example, if we want 4 clusters of
-3-dimensional RGB colors, we will have a `KMeans<4, 3>`. We also want to return
-the label of each pixel, i.e. the index of the mean of the cluster it belongs
-to. We will store that in the `labels` vector; yes, we will reluctantly have to
-resort to the heap for this.
+that will be the output of our computation. For finding $K$ means in a
+$D$-dimensional space, the function will return an instance of `KMeans<K, D>`.
+For example, if we want 4 clusters of 3-dimensional RGB colors, we will have a
+`KMeans<4, 3>`. We also want to return the label of each pixel, i.e. the index
+of the mean of the cluster it belongs to. We will store that in the `labels`
+vector; yes, we will reluctantly have to resort to the heap for this.
 
 ```rust
 pub(crate) struct KMeans<const K: usize, const D: usize> {
@@ -319,7 +314,7 @@ pub(crate) fn distance<const D: usize>(a: &[f32; D], b: &[f32; D]) -> f32 {
 }
 ```
 
-Our {% tex() %} K {% end %}-means function accepts an array of points of given dimensionality D, and
+Our $K$-means function accepts an array of points of given dimensionality D, and
 returns an instance of `KMeans<K, D>`. We preallocate the vector space we know
 to require (but can't know at compile time) and initialize the centroids (more
 on this later). We also specify a const generic for the number of iterations.
@@ -364,13 +359,13 @@ labels.extend(points.iter().map(|p| {
 
 Now we need to compute the new centroids. Recall that the mean is computed as
 
-{% tex(mode='display') %}
+$$
 \mathbb{E}(x) = \sum_{i=1}^{N} \frac{x_i}{N}
-{% end %}
+$$
 
-For each cluster, our {% tex() %} N {% end %} is the number of points in the
-cluster. We stored that value in the histogram array `label_hist`, so we can
-simply take that value for each of the {% tex() %} K {% end %} clusters and compute its inverse.
+For each cluster, our $K$ is the number of points in the cluster. We stored that
+value in the histogram array `label_hist`, so we can simply take that value for
+each of the $K$ clusters and compute its inverse.
 
 
 ```rust
@@ -393,16 +388,15 @@ labels.iter().enumerate().for_each(|(i, &l)| {
 
 #### Initialization
 
-The output of {% tex() %} K {% end %}-means largely depends on the choice
-of starting centroids. The naïve way of doing that is just choosing random
-points in our vector space, or sampling random points from our observations
-(i.e. taking one of the actual pixels at random). These initialization methods
-are suboptimal, though, and tend to be inconsistent. We can rely on the
-[K-means++][kmeanspp] algorithm for a reliable initial guess. It works by
-choosing a (possibly random) pixel value as our first centroid and then, for
-each of the other {% tex() %} 1.. K {% end %} centroids, we choose the pixel
-which has the maximum distance from its closest centroid. It's kind of a
-mouthful, I know.
+The output of $K$-means largely depends on the choice of starting centroids. The
+naïve way of doing that is just choosing random points in our vector space,
+or sampling random points from our observations (i.e. taking one of the actual
+pixels at random). These initialization methods are suboptimal, though, and tend
+to be inconsistent. We can rely on the [K-means++][kmeanspp] algorithm for a
+reliable initial guess. It works by choosing a (possibly random) pixel value as
+our first centroid and then, for each of the other $1..K$ centroids, we choose
+the pixel which has the maximum distance from its closest centroid. It's kind of
+a mouthful, I know.
 
 In our implementation, we take the center pixel as first centroid, because we
 assume it's going to have a color we're interested in, and then we go from
@@ -451,7 +445,7 @@ fn k_means_init<const K: usize, const D: usize>(
 #### The results
 
 Here's what all the above shenanigans look like on FrankerZ and ConcernFroge,
-with {% tex() %} K = 3 {% end %}.
+with $K = 3$.
 
 <p style="text-align: center">
 <img src="frankerz.png" id="src1" style="display: inline-block; width: 64px"/>
@@ -520,11 +514,10 @@ let dst_data_xyza: Vec<[f32; 4]> = dst_data
     .collect();
 ```
 
-All that's left for us to do is to compute our {% tex() %} K {% end %} means for
-our source image and apply the transformation to the target image. We subtract
-the target mean and add back the source mean to each channel but the alpha --
-we're okay with it just being unchanged, as we've already cleaned it via the
-thresholding function.
+All that's left for us to do is to compute our $K$ means for our source image
+and apply the transformation to the target image. We subtract the target mean
+and add back the source mean to each channel but the alpha -- we're okay with it
+just being unchanged, as we've already cleaned it via the thresholding function.
 
 ```rust
 let src_means = k_means::<3, 4, 10>(&src_data_xyza);
@@ -667,6 +660,8 @@ github][gitproj]. If you have questions or want to chat, feel free to DM or
 mention me on [Twitter][twitter]!
 
 Till next time. Take care!
+
+<script defer src="bootstrap.js"></script>
 
 [colortransfer]: https://www.cs.tau.ac.il/~turkel/imagepapers/ColorTransfer.pdf
 [rgb]: https://en.wikipedia.org/wiki/RGB_color_spaces

@@ -1,1 +1,1 @@
-{% if mode %}<script type="math/tex; mode={{mode}}">{{ body | safe }}</script>{% else %}<script type="math/tex">{{ body | safe }}</script>{% endif %}
+<script type="math/tex{% if block %};mode=display{% endif %}">{{body | safe}}</script>
