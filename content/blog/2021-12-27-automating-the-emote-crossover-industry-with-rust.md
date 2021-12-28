@@ -194,7 +194,7 @@ help with cleaning up images a bit and reducing noise. It's an assumption that
 we can make by virtue of what most emotes look like: a lot of transparency
 around the borders, a lot of color in the middle.
 
-```
+```rust
 pub(crate) fn threshold_alpha<const T: u8>(rgba: [u8; 4]) -> [u8; 4] {
     if rgba[3] < T {
         [0u8; 4]
@@ -304,7 +304,7 @@ the label of each pixel, i.e. the index of the mean of the cluster it belongs
 to. We will store that in the `labels` vector; yes, we will reluctantly have to
 resort to the heap for this.
 
-```
+```rust
 pub(crate) struct KMeans<const K: usize, const D: usize> {
     pub(crate) means: [[f32; D]; K],
     pub(crate) labels: Vec<usize>,
@@ -313,7 +313,7 @@ pub(crate) struct KMeans<const K: usize, const D: usize> {
 
 We also need a simple Euclidean distance function:
 
-```
+```rust
 pub(crate) fn distance<const D: usize>(a: &[f32; D], b: &[f32; D]) -> f32 {
     a.zip(*b).map(|(a, b)| (a - b).powf(2.)).iter().sum::<f32>()
 }
@@ -324,7 +324,7 @@ returns an instance of `KMeans<K, D>`. We preallocate the vector space we know
 to require (but can't know at compile time) and initialize the centroids (more
 on this later). We also specify a const generic for the number of iterations.
 
-```
+```rust
 pub(crate) fn k_means<const K: usize, const D: usize, const ITERS: usize>(
     points: &[[f32; D]],
 ) -> KMeans<K, D> {
@@ -341,7 +341,7 @@ passed through. We also keep tabs on how many instances of each label we found,
 by incrementing the `labels_hist` array's entry corresponding to the label we
 just found.
 
-```
+```rust
 let mut labels_hist = [0usize; K];
 labels.clear();
 labels.extend(points.iter().map(|p| {
@@ -373,7 +373,7 @@ cluster. We stored that value in the histogram array `label_hist`, so we can
 simply take that value for each of the {% tex() %} K {% end %} clusters and compute its inverse.
 
 
-```
+```rust
 let labels_weights: [f32; K] =
     labels_hist.map(|h| if h == 0 { 0. } else { 1. / (h as f32) });
 ```
@@ -381,7 +381,7 @@ let labels_weights: [f32; K] =
 Finally, we reinitialize the centroids to zero, and compute the above weighted
 summation:
 
-```
+```rust
 centroids = [[0f32; D]; K];
 
 labels.iter().enumerate().for_each(|(i, &l)| {
@@ -408,7 +408,7 @@ In our implementation, we take the center pixel as first centroid, because we
 assume it's going to have a color we're interested in, and then we go from
 there.
 
-```
+```rust
 fn k_means_init<const K: usize, const D: usize>(
     points: &[[f32; D]]
 ) -> [[f32; D]; K] {
@@ -483,7 +483,7 @@ Let us now implement the modified [color transfer][colortransfer] algorithm
 we mentioned before. We assume that our inputs are flat vectors of 8-bit RGBA
 pixels, one for our source and one for our target (or destination) image:
 
-```
+```rust
 let src_data: Vec<u8> = vec![r, g, b, a, r, g, b, a, ...];
 let dst_data: Vec<u8> = vec![r, g, b, a, r, g, b, a, ...];
 ```
@@ -498,7 +498,7 @@ looks a lot cleaner. We can't do everything at compile time and on the stack,
 though, so we're going to cave in and allocate a little bit of memory on the
 heap.
 
-```
+```rust
 let src_data_xyza: Vec<[f32; 4]> = src_data
     .data()
     .as_slice()
@@ -526,7 +526,7 @@ the target mean and add back the source mean to each channel but the alpha --
 we're okay with it just being unchanged, as we've already cleaned it via the
 thresholding function.
 
-```
+```rust
 let src_means = k_means::<3, 4, 10>(&src_data_xyza);
 let dst_means = k_means::<2, 4, 10>(&dst_data_xyza);
 
