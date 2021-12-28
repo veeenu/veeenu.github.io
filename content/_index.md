@@ -18,22 +18,27 @@ description = "Andrea Venuta. Software engineer, graphics programmer"
         <ul class="links">
           <li>
             <a href="https://github.com/veeenu" target="_blank">
-              <img alt="GitHub" src="https://unpkg.com/simple-icons@2.11.0/icons/github.svg"/>
+              <img alt="GitHub" src="img/github.svg"/>
             </a>
           </li>
           <li>
             <a href="https://www.linkedin.com/in/andreavenuta/" target="_blank">
-              <img alt="LinkedIn" src="https://unpkg.com/simple-icons@2.11.0/icons/linkedin.svg"/>
+              <img alt="LinkedIn" src="img/linkedin.svg"/>
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com/johndisandonato" target="_blank">
+              <img alt="Twitter" src="img/twitter.svg"/>
             </a>
           </li>
           <li>
             <a href="https://twitch.tv/johndisandonato" target="_blank">
-              <img alt="Twitch.tv" src="https://unpkg.com/simple-icons@2.11.0/icons/twitch.svg"/>
+              <img alt="Twitch.tv" src="img/twitch.svg"/>
             </a>
           </li>
           <li>
             <a href="cv.pdf" target="_blank">
-              <img alt="CV - Icon made by Vitaly Gorbachev (https://www.flaticon.com/authors/vitaly-gorbachev) from www.flaticon.com" src="cv.svg"/>
+              <img alt="CV - Icon made by Vitaly Gorbachev (https://www.flaticon.com/authors/vitaly-gorbachev) from www.flaticon.com" src="img/cv.svg"/>
             </a>
           </li>
         </ul>

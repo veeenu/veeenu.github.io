@@ -1,12 +1,12 @@
-@use 'typeplate/typeplate_index'
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400&family=Manrope:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 $xsmall: 480px
 $small: 768px
 $medium: 900px
 $large: 1280px
 $xlarge: 1920px
-$max-width-px: 960px
+$max-width-px: 800px
 
 $color-primary-0: #383B3C;	/* Main Primary color */
 $color-primary-1: #444C52;
@@ -24,14 +24,18 @@ $color-blue-4: #124E7B;
 
 $color-white: #aeaeae;
 
+h1, h2
+  border-bottom: 1px solid $color-white
+
 body
   background-color: $color-primary-3
   color: $color-white
   margin: 0
+  font-size: 18px
 
 html, body, button, input, select, textarea, .pure-g [class *= "pure-u"]
-  font-family: "Manrope", Helvetica, sans-serif;
-  font-weight: 300
+  font-family: "Montserrat", Helvetica, sans-serif;
+  font-weight: 400
 
 pre, code
   font-family: "Fira Code", monospace
@@ -143,21 +147,21 @@ p
           font-variant: small-caps
         p
           text-align: justify
-        ul.links
-          list-style: none
-          margin: 0
-          display: flex
-          flex-flow: row nowrap
-          justify-content: center
-          li
-            display: inline-block
-            width: 2rem
-            padding: 0 1rem
-            & > a > img
-              width: 2rem
-              filter: invert(60%)
-            & > a:hover > img
-              filter: invert(50%) sepia(51%) saturate(2000%) hue-rotate(180deg) saturate(0.4)
+ul.links
+  list-style: none
+  margin: 0
+  display: flex
+  flex-flow: row nowrap
+  justify-content: center
+  li
+    display: inline-block
+    width: 2rem
+    padding: 0 1rem
+    & > a > img
+      width: 2rem
+      filter: invert(60%)
+    & > a:hover > img
+      filter: invert(50%) sepia(51%) saturate(2000%) hue-rotate(180deg) saturate(0.4)
 
   .splash-after
     position: relative
@@ -208,7 +212,6 @@ header#menu-header
     transform: translate(0, 25%)
     & > li
       text-transform: uppercase
-      width: 5rem
       display: block
       padding: 0 1rem
       border-bottom: 2px solid transparent
@@ -236,6 +239,10 @@ header#menu-header
 
 .top-container
   margin-top: 8rem
+
+blockquote
+  padding-left: 1em
+  border-left: 1px solid
 
 article.article
   width: 75vw
