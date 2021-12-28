@@ -10,9 +10,9 @@ life during a global pandemic: silly emotes. <!-- more -->
 
 Who wants to constrain their communication avenues to the diktats coming from
 the Unicode Consortium, when you could instead enhance your vocabulary with
-overly obscure inside jokes, impenetrable to almost anyone outside a given
-narrow community? And even if you wanted that, who would waste a chance to write
-some Rust code? Certainly not me, dear reader.
+obscure inside jokes, impenetrable to anyone outside a given narrow community?
+And even if you wanted that, who would waste a chance to write some Rust code?
+Certainly not me, dear reader.
 
 (If you aren't familiar with how Twitch communities work and what Twitch emotes
 are, check [this](https://www.twitch.tv/creatorcamp/en/learn-the-basics/emotes/)
@@ -38,8 +38,8 @@ call them "the gang":
 </p>
 
 
-To do that, I would match SwoleDoge's color to my target emote's color, then I
-would just slap the latter's face on top of it. Simple task to do in basically
+To create them, I would match SwoleDoge's color to my target emote's color, then
+I would just slap the latter's face on top of it. Simple task to do in basically
 any sufficiently powerful image editor.
 
 Now, there are two skillsets which I deem important as a software engineer:
@@ -49,7 +49,7 @@ editing behavior more than twice, and I decided I was too lazy to repeat that
 again.
 
 So, to avoid wasting _whole minutes_ by manually matching two pictures' colors,
-I decided it was well worth embarking in _just a few weeks, a couple months
+I decided it was well worth embarking on _just a few weeks, a couple months
 tops_ of research in computational image manipulation. What you are about to
 read is the output of that research.
 
@@ -87,18 +87,17 @@ B_t^* = (B_t - \mathbb{E}(B_t)) \frac{\sigma(B_s)}{\sigma(B_t)} + \mathbb{E}(B_s
 $$
 
 Without going into too much detail, the [XYZ][xyz] color space works pretty
-okay for our use case, so we don't really need to convert all the way to the
-[LMS][lms] and [CIELAB][cielab] color spaces. Another crucial factor is that our
-emotes are not photographs, have remarkedly different color distributions, not
-to mention an *alpha* channel for transparency, so the original paper's approach
-had to be revised slightly.
+okay for our use case, so we don't really need to convert all the way to
+the [LMS][lms] and [CIELAB][cielab] color spaces. Another crucial factor is
+that our emotes are not photographs. They also have markedly different color
+distributions, not to mention an *alpha* channel for transparency, so the
+original paper's approach had to be revised slightly.
 
 ### Rust implementation
 
-Our project is made up of a lot of array computations. Given that, we are going
-to use a recent nightly Rust toolchain: we need some features which still
-haven't made it to stable, but are pretty useful for speed and cleanliness
-purposes.
+Our project is made up of many array computations. Given that, we are going to
+use a recent nightly Rust toolchain: we need some features which still haven't
+made it to stable, but are pretty useful for speed and cleanliness purposes.
 
 ```rust
 #![feature(array_chunks)]
@@ -224,14 +223,14 @@ group's centroid to be the *mean* of the points currently belonging to it.
 
 ### Rust implementation
 
-The algorithm in Rust looks very nice and concise, and it is also reasonably
-fast, if I say so myself! Again, we leverage all the compile time computation we
+The algorithm in Rust looks elegant and concise, and it is also reasonably fast,
+if I say so myself! Again, we leverage all the compile time computation we
 can: we use [const generics][constgenerics] so we can implement the algorithm
 for arbitrary-sized vector spaces and arbitrary number of partitions $K$ with
 constants instead of variables. This makes the optimizer pretty happy because it
 can make all sorts of assumptions.
 
-We also use the `array_zip` unstable feature in some spots. This allows us to
+We also use the `array_zip` unstable feature in some places. This allows us to
 avoid the `.iter()` notation in some awkward spots and supposedly also makes the
 optimizer all warm and fuzzy -- and I mean, I'm happy too if I can just cough up
 some unrolled assembly loops while using high level functional constructs.
@@ -314,10 +313,11 @@ pub(crate) fn distance<const D: usize>(a: &[f32; D], b: &[f32; D]) -> f32 {
 }
 ```
 
-Our $K$-means function accepts an array of points of given dimensionality D, and
-returns an instance of `KMeans<K, D>`. We preallocate the vector space we know
-to require (but can't know at compile time) and initialize the centroids (more
-on this later). We also specify a const generic for the number of iterations.
+Our $K$-means function accepts an array of points of given dimensionality D,
+and returns an instance of `KMeans<K, D>`. We preallocate the vector space we
+know we need (we can't use an array, as we don't know how much space we need at
+compile time) and initialize the centroids (more on this later). We also specify
+a const generic for the number of iterations.
 
 ```rust
 pub(crate) fn k_means<const K: usize, const D: usize, const ITERS: usize>(
@@ -328,13 +328,13 @@ pub(crate) fn k_means<const K: usize, const D: usize, const ITERS: usize>(
     for _ in 0..ITERS {
 ```
 
-The iteration steps works by writing into the preallocated `labels` vector the
+The iteration step works by writing into the preallocated `labels` vector the
 label of the closest current centroid for each pixel. This evaluation happens
 inside the call to `fold()`, where each centroid is compared with the pixel we
 are currently iterating over, and the centroid with the smaller distance is
-passed through. We also keep tabs on how many instances of each label we found,
-by incrementing the `labels_hist` array's entry corresponding to the label we
-just found.
+passed through. We also keep tabs on how many instances of each label we have
+found, by incrementing the `labels_hist` array's entry corresponding to the
+label we just found.
 
 ```rust
 let mut labels_hist = [0usize; K];
@@ -394,7 +394,7 @@ or sampling random points from our observations (i.e. taking one of the actual
 pixels at random). These initialization methods are suboptimal, though, and tend
 to be inconsistent. We can rely on the [K-means++][kmeanspp] algorithm for a
 reliable initial guess. It works by choosing a (possibly random) pixel value as
-our first centroid and then, for each of the other $1..K$ centroids, we choose
+our first centroid and then, for each of the other $1..K$ centroids, choosing
 the pixel which has the maximum distance from its closest centroid. It's kind of
 a mouthful, I know.
 
@@ -516,8 +516,9 @@ let dst_data_xyza: Vec<[f32; 4]> = dst_data
 
 All that's left for us to do is to compute our $K$ means for our source image
 and apply the transformation to the target image. We subtract the target mean
-and add back the source mean to each channel but the alpha -- we're okay with it
-just being unchanged, as we've already cleaned it via the thresholding function.
+and add back the source mean to each channel except the alpha -- we're okay
+with it just being unchanged, as we've already cleaned it via the thresholding
+function.
 
 ```rust
 let src_means = k_means::<3, 4, 10>(&src_data_xyza);
@@ -542,14 +543,14 @@ for src_mean in src_means.means {
 }
 ```
 
-You may have noticed we also clustered the target image in two partitions: this
+You may have noticed we also clustered the target image in two partitions. This
 is because, as I mentioned earlier, emotes generally have a lot of transparency
 around the edges and a lot of color in the center, and averaging all of it is
 going to look bad (the transparent color actually counts as black, mostly). We
 apply the transformation to each destination pixel against the mean of its own
 cluster; ideally, the more destination clusters, the more refined will be the
 resulting transformation, up to a point where the clusters will be too similar
-to each other and we can start getting weird results. Two destination clusters
+to each other and we start getting weird results. Two destination clusters
 work just fine for target images without a lot of color variations, like our
 SwoleDoge.
 
@@ -627,16 +628,18 @@ Let's mash them up! Here's the result:
 })()
 </script>
 
-Impressive, right?
+Impressive, right? Granted, we haven't mounted any head on top of any other
+head, but that's an entirely different matter and probably another couple
+months' worth of research, so I think I'll let that go for the time being.
 
 *"Yeah but, like, dude, **why** is it always Rust"*
 
 Well, yeah, you're right, I could've just whipped up a [Jupyter][jupyter]
-notebook, [scipy][scipy], [numpy][numpy] and [Pillow][pil] and be done with it
+notebook, [scipy][scipy], [numpy][numpy] and [Pillow][pil] and been done with it
 for a while already. And I did that indeed for prototyping all of this and it
 was fantastic in its own way. But. I chose Rust because after spending almost
 my entire career dissatisfied with programming languages and their ecosystems,
-I finally found one that genuinely makes me happy and and cares deeply about
+I have finally found one that genuinely makes me happy and cares deeply about
 all the things I care deeply about -- cleanliness, correctness, performance,
 maintainability, you name it -- for things I'm meant to run in production.
 
@@ -655,7 +658,9 @@ and drag it over either FrankerZ or SwoleDoge. Go ahead. I'll wait!
 Thank you for the time you chose to spend reading this. I'm glad you did and
 I hope you enjoyed it!
 
-If you want to check out the project's whole code, you can find it on [my
+A special thank you to Spacey, whose help in editing this post was invaluable.
+
+If you want to check out the project's code, you can find it on [my
 github][gitproj]. If you have questions or want to chat, feel free to DM or
 mention me on [Twitter][twitter]!
 

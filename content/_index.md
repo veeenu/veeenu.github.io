@@ -1,5 +1,5 @@
 +++
-template = "index.html"
+template = "splash.html"
 title = "Andrea Venuta"
 description = "Andrea Venuta. Software engineer, graphics programmer"
 +++
@@ -53,7 +53,7 @@ description = "Andrea Venuta. Software engineer, graphics programmer"
           <h1>Hello!</h1>
         </header>
         <section>
-          <p>I'm a software developer and quantitative analyst. I cultivate
+          <p>I'm a software engineer and quantitative analyst. I cultivate
           interest in a wide variety of topics related to programming, mathematics
           and finance.</p> <p>I hold a Bachelor of Science degree in <a
           href="http://www.informatica.unifi.it" target="_blank">Computer

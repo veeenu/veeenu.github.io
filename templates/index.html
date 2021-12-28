@@ -30,7 +30,7 @@
     </script>
   </head>
 
-  <body>
+  <body {% block bodyattribs %}{% endblock bodyattribs %}>
     <header id="menu-header">
       <a class="image" href="{{ config.base_url | safe }}">
         <div>

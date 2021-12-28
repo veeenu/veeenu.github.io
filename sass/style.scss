@@ -28,6 +28,16 @@ $xlarge: 1200px;
   --line-height: 1.5;
 }
 
+@media(prefers-color-scheme: dark) {
+  :root {
+    --color-blue: #6197C0;
+    --color-primary: #26282A;
+    --color-white: #aeaeae;
+    --max-width-px: 800px;
+    --line-height: 1.5;
+  }
+}
+
 h1, h2 {
   border-bottom: 1px solid var(--color-white);
 }
@@ -241,9 +251,9 @@ ul.links {
 
 header#menu-header {
   pointer-events: none;
-  &.blog {
+  body:not(.splash) & {
     background: var(--color-primary);
-    box-shadow: 10px 10px 10px var(--color-primary);
+    box-shadow: 0px 6px 6px var(--color-primary);
   }
   & > * {
     pointer-events: all;
@@ -328,6 +338,8 @@ blockquote {
 }
 
 article {
+  padding: 0.25rem 2rem;
+
   max-width: var(--max-width-px);
   img {
     display: block;
