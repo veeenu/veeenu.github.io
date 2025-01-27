@@ -46,7 +46,7 @@ description = "Andrea Venuta. Software engineer, graphics programmer"
     </div>
   </div>
 
-  <div class="splash-after">
+  <!--<div class="splash-after">
     <div class="container">
       <article class="content">
         <header>
@@ -126,5 +126,5 @@ description = "Andrea Venuta. Software engineer, graphics programmer"
         </section>
       </article>
     </div>
-  </div>
+  </div>-->
 </div>

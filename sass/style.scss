@@ -119,6 +119,10 @@ pre {
   overflow: auto;
 }
 
+.index-page:has(+ *) ~ header {
+  background: green;
+}
+
 .index-page {
   background: inherit;
 
