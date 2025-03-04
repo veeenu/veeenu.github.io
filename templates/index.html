@@ -32,12 +32,14 @@
 
   <body {% block bodyattribs %}{% endblock bodyattribs %}>
     <header id="menu-header">
+      {% block menuheader %}
       <a class="image" href="{{ config.base_url | safe }}">
         <div>
           <img src="{{ config.base_url | safe }}/me.jpg" alt="Andrea Venuta"/>
         </div>
         <span>Andrea Venuta</span>
       </a>
+      {% endblock menuheader %}
       <ul>
         <li><a href="{{ config.base_url | safe }}">About</a></li>
         <li><a href="{{ config.base_url | safe }}/blog.html">Blog</a></li>

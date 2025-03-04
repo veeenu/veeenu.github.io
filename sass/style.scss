@@ -322,8 +322,15 @@ header#menu-header {
       float: right;
     }
   }
-    
-  position: fixed;
+
+  body.splash & {
+    position: fixed;
+  }
+
+  body:not(.splash) & {
+    position: absolute;
+  }
+
   top: 0;
   padding: 2rem 3rem;
   box-sizing: border-box;

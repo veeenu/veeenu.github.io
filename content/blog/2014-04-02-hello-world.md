@@ -4,7 +4,8 @@ title = "Hello, world!"
 aliases = ["/2014/04/02/hello-world.html"]
 +++
 
-I started this blog because I recently stumbled across the beautiful world of graphics programming, and thought that maybe for once sharing my learning process could be useful to somebody, somewhere in the world. <!-- more -->
+I started this blog because I recently stumbled across the beautiful world of graphics programming, and thought that maybe for once sharing my learning process could be useful to somebody, somewhere in the world.
+<!-- more -->
 
 Preface. I have never been too good at graphicsy things.
 When I was 9 a teacher of mine gave me a bad mark for a

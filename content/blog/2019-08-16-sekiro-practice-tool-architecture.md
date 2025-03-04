@@ -9,7 +9,8 @@ tools for speedruns. I must have rewritten the [Dark Souls III practice tool](ht
 from scratch no less than three or four times, and not a single time have I
 been completely satisfied with the results, in terms of features, user experience
 and reliability. Though, as I've also been working on [practice tools for Sekiro](https://github.com/veeenu/sekiro-practice-tool),
-I believe I have finally found a satisfying setup after much experimentation. <!-- more -->
+I believe I have finally found a satisfying setup after much experimentation. 
+<!-- more -->
 
 I place much value on developing software which is self-contained, has as few
 external dependencies as possible (zero, ideally), is unobtrusive to the user

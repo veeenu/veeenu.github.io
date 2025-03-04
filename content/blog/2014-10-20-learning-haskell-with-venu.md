@@ -9,7 +9,9 @@ generation algorithms, and began feeling the need for mathematical rigour over
 the practical, "real life situation" style I've been used to by writing
 Javascript day in, day out. I got to a point where simple simulations required
 way more boilerplate code than I was willing to write, and the usage of native
-numeric constructs began getting in the way of performance. <!-- more --> For example, I was
+numeric constructs began getting in the way of performance. 
+<!-- more -->
+For example, I was
 working on an {% tex() %} O(n) {% end %} image processing algorithm, representing the pixels as
 plain 1D arrays, and I discovered that wrapping the aforementioned array
 inside a native `Uint32Array` produced an impressive performance boost, cutting

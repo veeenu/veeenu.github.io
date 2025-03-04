@@ -11,7 +11,8 @@ code golfing challenge dating back in 1984, a few years before I was born.
 Its rules asked to build a raytracer in C with certain features and
 functions and shading models. Among those, Andrew Kensler's version, checking
 in at 1337 bytes, stood out and became world-wide renowned (for good reasons,
-if you ask me). This was its output. <!-- more -->
+if you ask me). This was its output. 
+<!-- more -->
 
 ![Andrew Kensler's business card raytracer](https://fabiensanglard.net/rayTracing_back_of_business_card/minray.png)
 

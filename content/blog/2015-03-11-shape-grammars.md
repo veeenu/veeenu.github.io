@@ -6,7 +6,9 @@ aliases = ["/2015/03/15/shape-grammars.html"]
 
 In the last few weeks I've been working on my thesis on procedural content
 generation and came across the concept of [shape grammars](http://en.wikipedia.org/wiki/Shape_grammar)
-in the context of urban and architectural modeling. <!-- more --> Shape grammars at first
+in the context of urban and architectural modeling. 
+<!-- more --> 
+Shape grammars at first
 look like nothing new at all coming from L-systems and rewriting systems in
 general, but at a closer inspection you come across a fundamental problem:
 computers can't easily, meaningfully recognize and work with shapes, to the

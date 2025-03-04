@@ -6,7 +6,8 @@ aliases = ["/2021/12/27/automating-the-emote-crossover-industry-with-rust.html"]
 
 In this post, I will discuss advanced computer vision and statistical techniques
 at the service of what is arguably one of the most important aspects of social
-life during a global pandemic: silly emotes. <!-- more -->
+life during a global pandemic: silly emotes. 
+<!-- more -->
 
 Who wants to constrain their communication avenues to the diktats coming from
 the Unicode Consortium, when you could instead enhance your vocabulary with

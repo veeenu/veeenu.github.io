@@ -9,7 +9,8 @@ time animation using WebGL. Familiarity with the WebGL / OpenGL rendering
 pipeline, and with linear algebra is necessary. There don't seem to be
 many well-made explainations online about real time 3D animation with
 WebGL which aren't involving Three.js and COLLADA so I hope that this will
-be useful for those who wish to program their own animations. <!-- more -->
+be useful for those who wish to program their own animations. 
+<!-- more -->
 
 We will model a mesh in Blender (a bit of familiarity is necessary here, too), 
 rig it up, write a barebone set of shaders and boilerplate code from scratch,

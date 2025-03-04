@@ -4,7 +4,8 @@ title = "Pokémon Go Feature detection with OpenCV2"
 aliases = ["/2019/02/28/pokemon-go-feature-detection-i.html"]
 +++
 
-This is my first post in ages. What can I say! I've been too busy <a href="http://veeenu.github.io/thesis-msc.pdf" target="_blank">studying finance</a> and <a href="http://veeenu.github.io/cv.pdf" target="_blank">working</a> to devote much time to writing code for fun. I've found some form of balance as of late, though, and a new drive to discover things, and I've gotten back to the grind.<!-- more -->
+This is my first post in ages. What can I say! I've been too busy <a href="http://veeenu.github.io/thesis-msc.pdf" target="_blank">studying finance</a> and <a href="http://veeenu.github.io/cv.pdf" target="_blank">working</a> to devote much time to writing code for fun. I've found some form of balance as of late, though, and a new drive to discover things, and I've gotten back to the grind.
+<!-- more -->
 
 I got back big time into Pokémon Go after fiddling with it at its inception and then setting it aside for almost a couple of years, and just recently began growing accustomed to my local community. I got curious about one particular aspect of the game, that is, excellent curveballs, and began to ponder about a potential general principle to improve the technique. My (still broadly untested) idea would be that the most reasonable pathing for a curveball throw would be a polynomial of degree not greater than second. So I decided to test the theory by working on an Android app which would predict a sensible pathing and overlay it on the screen in order to guide the player and see if it could bring any improvement.
 

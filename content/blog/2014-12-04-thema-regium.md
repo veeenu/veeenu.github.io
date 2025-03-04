@@ -7,7 +7,8 @@ aliases = ["/2014/12/04/thema-regium.html"]
 No big secret, I'm a huge fan of procedural content generation. I'm also a big
 fan of Johann Sebastian Bach and his _Musikalisches Opfer_, whose fascinating
 story I came to know thanks to D.R. Hofstader's
-["Gödel, Escher, Bach: an Eternal Golden Braid"](http://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach). <!-- more -->
+["Gödel, Escher, Bach: an Eternal Golden Braid"](http://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach). 
+<!-- more -->
 On the side of it, the readers of this blog might also know I'm a huge fan of
 Javascript, so at this point I don't see why putting the three things together
 should be a bad idea.
