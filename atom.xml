@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title></title>
+    <link rel="self" type="application/atom+xml" href="https://veeenu.github.io/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://veeenu.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2021-12-27T00:00:00+00:00</updated>
+    <id>https://veeenu.github.io/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Automating the Emote Crossover industry with Rust</title>
+        <published>2021-12-27T00:00:00+00:00</published>
+        <updated>2021-12-27T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/automating-the-emote-crossover-industry-with-rust/"/>
+        <id>https://veeenu.github.io/blog/automating-the-emote-crossover-industry-with-rust/</id>
+        
+        <summary type="html">&lt;p&gt;In this post, I will discuss advanced computer vision and statistical techniques
+at the service of what is arguably one of the most important aspects of social
+life during a global pandemic: silly emotes.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>I built my own business card raytracer in Rust, because why not</title>
+        <published>2020-04-29T00:00:00+00:00</published>
+        <updated>2020-04-29T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/rust-sdf-raytracer/"/>
+        <id>https://veeenu.github.io/blog/rust-sdf-raytracer/</id>
+        
+        <summary type="html">&lt;p&gt;As you may know, and if you&#x27;re reading this chances are you do, there&#x27;s
+&lt;a href=&quot;https:&#x2F;&#x2F;fabiensanglard.net&#x2F;rayTracing_back_of_business_card&#x2F;&quot;&gt;this post&lt;&#x2F;a&gt; that&#x27;s
+been roaming around for 7 years and periodically resurfaces. It refers to a
+code golfing challenge dating back in 1984, a few years before I was born.
+Its rules asked to build a raytracer in C with certain features and
+functions and shading models. Among those, Andrew Kensler&#x27;s version, checking
+in at 1337 bytes, stood out and became world-wide renowned (for good reasons,
+if you ask me). This was its output.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Sekiro practice tool: the architecture</title>
+        <published>2019-08-16T00:00:00+00:00</published>
+        <updated>2019-08-16T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/sekiro-practice-tool-architecture/"/>
+        <id>https://veeenu.github.io/blog/sekiro-practice-tool-architecture/</id>
+        
+        <summary type="html">&lt;p&gt;I have recently (well, since &lt;em&gt;forever&lt;&#x2F;em&gt;) been working on a number of practice
+tools for speedruns. I must have rewritten the &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;veeenu&#x2F;DarkSoulsIII-Mods&quot;&gt;Dark Souls III practice tool&lt;&#x2F;a&gt;
+from scratch no less than three or four times, and not a single time have I
+been completely satisfied with the results, in terms of features, user experience
+and reliability. Though, as I&#x27;ve also been working on &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;veeenu&#x2F;sekiro-practice-tool&quot;&gt;practice tools for Sekiro&lt;&#x2F;a&gt;,
+I believe I have finally found a satisfying setup after much experimentation.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Pokémon Go Feature detection with OpenCV2</title>
+        <published>2019-02-28T00:00:00+00:00</published>
+        <updated>2019-02-28T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/pokemon-go-feature-detection/"/>
+        <id>https://veeenu.github.io/blog/pokemon-go-feature-detection/</id>
+        
+        <summary type="html">&lt;p&gt;This is my first post in ages. What can I say! I&#x27;ve been too busy &lt;a href=&quot;http:&#x2F;&#x2F;veeenu.github.io&#x2F;thesis-msc.pdf&quot; target=&quot;_blank&quot;&gt;studying finance&lt;&#x2F;a&gt; and &lt;a href=&quot;http:&#x2F;&#x2F;veeenu.github.io&#x2F;cv.pdf&quot; target=&quot;_blank&quot;&gt;working&lt;&#x2F;a&gt; to devote much time to writing code for fun. I&#x27;ve found some form of balance as of late, though, and a new drive to discover things, and I&#x27;ve gotten back to the grind.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Shape grammars and the Sierpinski triangle</title>
+        <published>2015-03-11T00:00:00+00:00</published>
+        <updated>2015-03-11T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/shape-grammars/"/>
+        <id>https://veeenu.github.io/blog/shape-grammars/</id>
+        
+        <summary type="html">&lt;p&gt;In the last few weeks I&#x27;ve been working on my thesis on procedural content
+generation and came across the concept of &lt;a href=&quot;http:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Shape_grammar&quot;&gt;shape grammars&lt;&#x2F;a&gt;
+in the context of urban and architectural modeling.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>FEZ: engine algorithms and ideas</title>
+        <published>2014-12-25T00:00:00+00:00</published>
+        <updated>2014-12-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/fez-world/"/>
+        <id>https://veeenu.github.io/blog/fez-world/</id>
+        
+        <summary type="html">&lt;p&gt;Yesterday I played for the first time &lt;a href=&quot;http:&#x2F;&#x2F;fezgame.com&#x2F;&quot;&gt;Polytron&#x27;s FEZ&lt;&#x2F;a&gt;.
+Graphics and design are amazing, but what truly struck me was the way the game
+switched between the 2D and 3D &quot;looks&quot;. It was truly inspiring, so I decided to
+spend a little time understanding and recreating the world rotation engine.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Thema Regium, math rock and procedurally generated sound</title>
+        <published>2014-12-04T00:00:00+00:00</published>
+        <updated>2014-12-04T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/thema-regium/"/>
+        <id>https://veeenu.github.io/blog/thema-regium/</id>
+        
+        <summary type="html">&lt;p&gt;No big secret, I&#x27;m a huge fan of procedural content generation. I&#x27;m also a big
+fan of Johann Sebastian Bach and his &lt;em&gt;Musikalisches Opfer&lt;&#x2F;em&gt;, whose fascinating
+story I came to know thanks to D.R. Hofstader&#x27;s
+&lt;a href=&quot;http:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;G%C3%B6del,_Escher,_Bach&quot;&gt;&quot;Gödel, Escher, Bach: an Eternal Golden Braid&quot;&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Learning Haskell with Venu: Cellular automata</title>
+        <published>2014-10-20T00:00:00+00:00</published>
+        <updated>2014-10-20T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/learning-haskell-with-venu/"/>
+        <id>https://veeenu.github.io/blog/learning-haskell-with-venu/</id>
+        
+        <summary type="html">&lt;p&gt;Lately I&#x27;ve been experimenting a lot with a number of CG and procedural content
+generation algorithms, and began feeling the need for mathematical rigour over
+the practical, &quot;real life situation&quot; style I&#x27;ve been used to by writing
+Javascript day in, day out. I got to a point where simple simulations required
+way more boilerplate code than I was willing to write, and the usage of native
+numeric constructs began getting in the way of performance.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Implementing Skeletal Animation</title>
+        <published>2014-05-09T00:00:00+00:00</published>
+        <updated>2014-05-09T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/implementing-skeletal-animation/"/>
+        <id>https://veeenu.github.io/blog/implementing-skeletal-animation/</id>
+        
+        <summary type="html">&lt;p&gt;Skeletal animation is a technique that allows for fast, efficient animation of 3D models. In this post I&#x27;m going to explain the concepts and my implementation for the &lt;em&gt;GPU matrix palette skinning&lt;&#x2F;em&gt; algorithm in WebGL. Skeletal animation is quite complex and I struggled to find a guide that explained clearly what was going on, or that didn&#x27;t waste too much time around language-specifics or code engineering making it quite hard to connect the dots in a simple way, so I hope I can manage to keep it simple enough.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Implementing Keyframe Animation</title>
+        <published>2014-04-22T00:00:00+00:00</published>
+        <updated>2014-04-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/implementing-keyframe-animation/"/>
+        <id>https://veeenu.github.io/blog/implementing-keyframe-animation/</id>
+        
+        <summary type="html">&lt;p&gt;In this post I will show you the way I implemented a keyframe-based 3D real
+time animation using WebGL. Familiarity with the WebGL &#x2F; OpenGL rendering
+pipeline, and with linear algebra is necessary. There don&#x27;t seem to be
+many well-made explainations online about real time 3D animation with
+WebGL which aren&#x27;t involving Three.js and COLLADA so I hope that this will
+be useful for those who wish to program their own animations.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>A little fun with LeapMotion</title>
+        <published>2014-04-10T00:00:00+00:00</published>
+        <updated>2014-04-10T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/testing-leapmotion/"/>
+        <id>https://veeenu.github.io/blog/testing-leapmotion/</id>
+        
+        <summary type="html">&lt;p&gt;I recently bought a &lt;a href=&quot;https:&#x2F;&#x2F;www.leapmotion.com&#x2F;&quot;&gt;LeapMotion&lt;&#x2F;a&gt;. It&#x27;s a great little tool, although interacting with it has somewhat of a learning curve. The API on the other hand has quite a beautiful design, is very well documented and a couple of minutes of reading are enough to get started.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>JS1k 2014: Post-mortem</title>
+        <published>2014-04-07T00:00:00+00:00</published>
+        <updated>2014-04-07T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/js1k-2014-post-mortem/"/>
+        <id>https://veeenu.github.io/blog/js1k-2014-post-mortem/</id>
+        
+        <summary type="html">&lt;p&gt;This year I discovered the &lt;a href=&quot;http:&#x2F;&#x2F;js1k.com&quot;&gt;JS1k&lt;&#x2F;a&gt; code competition just in time for me to submit an entry. &lt;a href=&quot;https:&#x2F;&#x2F;gist.github.com&#x2F;veeenu&#x2F;10016903&quot;&gt;I&#x27;m not really new at doing ugly things with source code&lt;&#x2F;a&gt;, but this time it was quite different. Perl is one of the quirkiest things I&#x27;ve ever put my hands on, and back in the day when I was scripting day in and day out with it I was happy like a child (well, I &lt;em&gt;was&lt;&#x2F;em&gt; practically a child after all); my Javascript coding skills came through a much more professional context though, so I&#x27;m better at being a nice guy and writing clean code than anything else.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Hello, world!</title>
+        <published>2014-04-02T00:00:00+00:00</published>
+        <updated>2014-04-02T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://veeenu.github.io/blog/hello-world/"/>
+        <id>https://veeenu.github.io/blog/hello-world/</id>
+        
+        <summary type="html">&lt;p&gt;I started this blog because I recently stumbled across the beautiful world of graphics programming, and thought that maybe for once sharing my learning process could be useful to somebody, somewhere in the world.&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>
