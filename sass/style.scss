@@ -325,7 +325,16 @@ header#menu-header {
   }
 
   body:not(.splash) & {
-    position: absolute;
+    position: sticky;
+    display: flow-root;
+    padding: 1rem 3rem;
+    a.image > span {
+      @supports (animation-timeline: scroll()) {
+        animation: fade-name linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 150px;
+      }
+    }
   }
 
   top: 0;
@@ -335,9 +344,23 @@ header#menu-header {
   z-index: 3;
 }
 
+@keyframes fade-name {
+  to {
+    opacity: 0;
+  }
+}
+
 .container {
   margin: 8rem auto 8rem auto;
   max-width: var(--max-width-px);
+}
+
+body:not(.splash) > .top-container {
+  margin-top: 2rem;
+}
+
+article > header h1 {
+  --typography-spacing-vertical: 1rem;
 }
 
 blockquote {
