@@ -12,7 +12,7 @@ way more boilerplate code than I was willing to write, and the usage of native
 numeric constructs began getting in the way of performance. 
 <!-- more -->
 For example, I was
-working on an {% tex() %} O(n) {% end %} image processing algorithm, representing the pixels as
+working on an {% <tex> %} O(n) {% </tex> %} image processing algorithm, representing the pixels as
 plain 1D arrays, and I discovered that wrapping the aforementioned array
 inside a native `Uint32Array` produced an impressive performance boost, cutting
 the execution time from ~46ms to ~1.5ms at the expense of adding a little
@@ -35,34 +35,34 @@ and of a chosen subset of neighboring cells. The criteria with which the new
 state is computed are called *rules* and are, basically, a function of those
 previous states.
 
-Let's choose a neighborhood in the form of the [Moore neighborhood](http://en.wikipedia.org/wiki/Moore_neighborhood).
-Let {% tex() %} A {% end %} denote the 2D matrix representing the automaton. The Moore
-neighborhood for a generic cell {% tex() %} A_{x,y} {% end %} is defined as
+Let's choose a neighborhood in the form of the [Moore neighborhood](https://en.wikipedia.org/wiki/Moore_neighborhood).
+Let {% <tex> %} A {% </tex> %} denote the 2D matrix representing the automaton. The Moore
+neighborhood for a generic cell {% <tex> %} A_{x,y} {% </tex> %} is defined as
 
-{% tex(mode='display') %}
+{% <tex> %}
 N_{x,y}(A) = \left\{ A_{x+i,y+j} \mid (i, j) \in [-1 .. 1]^2 \setminus (0, 0) \right\}
-{% end%}
+{% </tex> %}
 
-Let {% tex() %} A^i {% end %} be the matrix at the {% tex() %}i{% end %}th generation. We could say that
+Let {% <tex> %} A^i {% </tex> %} be the matrix at the {% <tex> %}i{% </tex> %}th generation. We could say that
 
-{% tex(mode='display') %}
+{% <tex> %}
 A^i_{x,y} = f(A^{i-1}_{x,y},N_{x,y}(A^{i-1}))
-{% end %}
+{% </tex> %}
 
-Finally, we could decide our rule function {% tex() %}f{% end %} to be a simplified version of the
-one described in this [nice article](http://gamedevelopment.tutsplus.com/tutorials/generate-random-cave-levels-using-cellular-automata--gamedev-9664)
+Finally, we could decide our rule function {% <tex> %}f{% </tex> %} to be a simplified version of the
+one described in this [nice article](https://gamedevelopment.tutsplus.com/tutorials/generate-random-cave-levels-using-cellular-automata--gamedev-9664)
 about cellular automata which I suggest you read, too.
 
-{% tex(mode='display') %}
+{% <tex> %}
 f(a_0,a_1...a_n) = \begin{cases} 1 &\mbox{} \sum\limits_{i=1}^n a_i > 4 \\
                    0 &\mbox{} otherwise \end{cases}
-{% end %}
+{% </tex> %}
 
 I decided to represent the automaton's grid as a plain 1D array. The `generation`
 function is defined inductively with great ease; being `vec` the array containing
 the grid, the generation 0 is the array itself, and each subsequent generation
 is defined as the `step` function mapped over the values of the previous
-generation. `step` corresponds to the {% tex() %}f{% end %} defined before, and the sum over the
+generation. `step` corresponds to the {% <tex> %}f{% </tex> %} defined before, and the sum over the
 neighborhood is represented as the fold of the sum operation over the cell values
 extracted by the `getCell` function.
 
@@ -91,8 +91,8 @@ Surely this could have been done a lot better, and it will be, as I keep studyin
 language and getting better at it. Meanwhile, please feel free to criticize and comment
 whatever you feel like to! :)
 
-**ERRATA CORRIGE**. My friend Roberto pointed out that the 2-tuple {%tex()%}(0, 0){%end%} wasn't supposed
+**ERRATA CORRIGE**. My friend Roberto pointed out that the 2-tuple {% <tex> %}(0, 0){% </tex> %} wasn't supposed
 to be part of the Moore neighborhood, and, besides that, its status was already taken into
-account for (but not used in this particular case) in the form of {%tex()%}a_0{%end%} in the rule
+account for (but not used in this particular case) in the form of {% <tex> %}a_0{% </tex> %} in the rule
 function anyway. This has now been corrected both in the code and in the mathematical
 expression.

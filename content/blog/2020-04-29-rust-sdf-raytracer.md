@@ -231,8 +231,8 @@ struct Mat4(
 
 At first, I implemented a full-fledged linear transform set of operations on
 `Mat4`, so that I could build the transformations on the fly. Then I realized I
-did not really need to do that -- a {%tex()%} R_{4\times4} \times R_4 \to R_4 {%end%} (note:
-vectors are actually in {%tex()%}R_3{%end%} but augmented with a 1; it [works like that](https://en.wikipedia.org/wiki/Affine_transformation#Augmented_matrix))
+did not really need to do that -- a {% <tex> %} R_{4\times4} \times R_4 \to R_4 {% </tex> %} (note:
+vectors are actually in {% <tex> %}R_3{% </tex> %} but augmented with a 1; it [works like that](https://en.wikipedia.org/wiki/Affine_transformation#Augmented_matrix))
 multiplication function, aptly named something clear and immediate to
 understand like `Z` or `q` or `m`, would have been more than enough to do
 whatever I needed to do after actually hardcoding the necessary

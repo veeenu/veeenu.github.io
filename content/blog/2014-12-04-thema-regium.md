@@ -7,7 +7,7 @@ aliases = ["/2014/12/04/thema-regium.html"]
 No big secret, I'm a huge fan of procedural content generation. I'm also a big
 fan of Johann Sebastian Bach and his _Musikalisches Opfer_, whose fascinating
 story I came to know thanks to D.R. Hofstader's
-["Gödel, Escher, Bach: an Eternal Golden Braid"](http://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach). 
+["Gödel, Escher, Bach: an Eternal Golden Braid"](https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach). 
 <!-- more -->
 On the side of it, the readers of this blog might also know I'm a huge fan of
 Javascript, so at this point I don't see why putting the three things together
@@ -104,16 +104,16 @@ osc.start(0);
 nextNote();
 ```
 
-Basically it's a crude regular language in which all {%tex()%}i \% 3{%end%}th tokens represent
-a note, all {%tex()%}i \% 3 + 1{%end%}th tokens represent the octave (expressed in a power of
-2: e.g. lower octave is {%tex()%}\frac{1}{2}{%end%}, upper octave is {%tex()%}2{%end%}, next one is {%tex()%}4{%end%}
-und so weiter) and all {%tex()%}i \% 3 + 2{%end%} tokens represent the duration. The
+Basically it's a crude regular language in which all {% <tex> %}i \% 3{% </tex> %}th tokens represent
+a note, all {% <tex> %}i \% 3 + 1{% </tex> %}th tokens represent the octave (expressed in a power of
+2: e.g. lower octave is {% <tex> %}\frac{1}{2}{% </tex> %}, upper octave is {% <tex> %}2{% </tex> %}, next one is {% <tex> %}4{% </tex> %}
+und so weiter) and all {% <tex> %}i \% 3 + 2{% </tex> %} tokens represent the duration. The
 `nextNote` function is a finite state automaton that picks three values,
 translates it to a frequency, plugs it in the oscillator, then waits for `dur *
 250` ms and moves on.
 
 You can read the full code [here](https://gist.github.com/veeenu/af48a4834ebc33306412)
-and listen to it in action [here](http://bl.ocks.org/veeenu/af48a4834ebc33306412).
+and listen to it in action [here](https://bl.ocks.org/veeenu/af48a4834ebc33306412).
 
 I'd love to hear from you; what's your stance in the "man vs machine in music"
 discourse?

@@ -34,7 +34,7 @@ of the rig, and their transformation matrix, control each one a subset of
 the vertices of the main, bigger mesh, partially or totally, depending on a
 weight that each vertex of the main mesh has defined for each vertex of the
 rig. More concepts are involved, such as 
-[Inverse Kinematics](http://en.wikipedia.org/wiki/Inverse_kinematics) and 
+[Inverse Kinematics](https://en.wikipedia.org/wiki/Inverse_kinematics) and 
 bone parenting, but we will discuss those in another post dedicated 
 specifically to skeletal animation.
 
@@ -72,7 +72,7 @@ Okay, let's get to it!
 
 ## Part 1: Modeling and rigging
 
-We will use [Blender](http://www.blender.org/) for this purpose. At the time
+We will use [Blender](https://www.blender.org/) for this purpose. At the time
 of writing, version 2.70a is out. We will create a complete, usable (albeit 
 very minimal) model of a barb-like thingamabob that bends itself towards the
 ground. The screenshots are [downloadable](/data/2014-04-22-implementing-keyframe-animation/veeenu-implementing-keyframe-animation.tgz) in a higher resolution along
@@ -162,7 +162,7 @@ Yay, we made it!
 ### 2.1 Boilerplate
 
 First of all, let's get the boilerplate code out of the way.
-We will use no external libraries besides [gl-matrix](http://glmatrix.net).
+We will use no external libraries besides [gl-matrix](https://glmatrix.net).
 We will use a barebone flat shader program, reported below:
 
 ```glsl
@@ -451,7 +451,7 @@ var curMesh = 0, curMeshf = 0.0;
 ```
 
 We now need some code to parse our 
-[Wavefront OBJ](http://en.wikipedia.org/wiki/Wavefront_.obj_file)
+[Wavefront OBJ](https://en.wikipedia.org/wiki/Wavefront_.obj_file)
 files. I found
 [this nice tutorial](http://jamwaffles.co.uk/tutorials/opengl/wavefrontloader/fileexplanation)
 that explains the ins and outs of the format using C++ syntax. If you made it

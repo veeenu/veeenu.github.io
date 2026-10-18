@@ -56,11 +56,11 @@ description = "Andrea Venuta. Software engineer, graphics programmer"
           <p>I'm a software engineer and quantitative analyst. I cultivate
           interest in a wide variety of topics related to programming, mathematics
           and finance.</p> <p>I hold a Bachelor of Science degree in <a
-          href="http://www.informatica.unifi.it" target="_blank">Computer
+          href="https://www.informatica.unifi.it" target="_blank">Computer
           Science</a>, with a thesis on <a href="/thesis-bsc.pdf"
           target="_blank">Procedural Content Generation and Real-time Rendering
           Techniques</a> and a Master of Science degree cum laude in <a
-          href="http://www.frm.unifi.it" target="_blank">Finance and Risk
+          href="https://www.frm.unifi.it" target="_blank">Finance and Risk
           Management</a>, with a thesis on <a href="/thesis-msc.pdf"
           target="_blank">Deep Learning Models for High-Frequency Cryptocurrency
           Forecasting</a>.</p> <p>When I'm not writing code for fun or profit, I
@@ -71,7 +71,7 @@ description = "Andrea Venuta. Software engineer, graphics programmer"
           href='https://it.wikipedia.org/wiki/Dark_Souls_III' target='_blank'>Dark
           Souls III</a>. I'm involved in the community, and met in it a lot of nice
           people I like to call friends. I stream my attempts live over <a
-          href="http://twitch.tv/johndisandonato" target="_blank">Twitch.tv</a>. I
+          href="https://twitch.tv/johndisandonato" target="_blank">Twitch.tv</a>. I
           also enjoy developing mods and tools to both assist the speedrunning
           practice and make it more interesting and fun. </p>
         </section>

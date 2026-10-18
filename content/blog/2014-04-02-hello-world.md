@@ -55,9 +55,9 @@ and I'll talk also about this as soon as I can.
 Bye for now!
 
 
-[gwcworld]: http://gwcworld.com/
-[interfase]: http://interfase.it/
-[js1kdemo]: http://js1k.com/2014-dragons/demo/1910
+[gwcworld]: https://gwcworld.com/
+[interfase]: https://interfase.it/
+[js1kdemo]: https://js1k.com/2014-dragons/demo/1910
 [render1]: /data/render1.png
 [render2]: /data/render2.png
 [render3]: /data/render3.png

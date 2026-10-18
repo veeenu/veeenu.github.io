@@ -14,7 +14,7 @@
             {% if page.word_count < 360 %}
               1 min
             {% else %}
-              {{ page.word_count / 180 | round }} mins
+              {{ (page.word_count / 180) | round }} mins
             {% endif %}
           </em>
         </p>

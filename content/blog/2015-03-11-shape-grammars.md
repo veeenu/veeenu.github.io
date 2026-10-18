@@ -5,7 +5,7 @@ aliases = ["/2015/03/15/shape-grammars.html"]
 +++
 
 In the last few weeks I've been working on my thesis on procedural content
-generation and came across the concept of [shape grammars](http://en.wikipedia.org/wiki/Shape_grammar)
+generation and came across the concept of [shape grammars](https://en.wikipedia.org/wiki/Shape_grammar)
 in the context of urban and architectural modeling. 
 <!-- more --> 
 Shape grammars at first
@@ -89,7 +89,7 @@ and to represent the output of the algorithm not as a string but as a tree,
 which is feasible without loss of generality (the tree itself is representable
 as a string). The data added to the symbol is some sort of geometrically
 meaningful representation of the shape; I chose to represent a shape with a
-bounding box and a set of points {%tex()%} \mathcal{P} {%end%} such that {%tex()%} p \in \mathcal{P} \Rightarrow p \in \left[0, 1\right]^2{%end%}. Furthermore,
+bounding box and a set of points {% <tex> %} \mathcal{P} {% </tex> %} such that {% <tex> %} p \in \mathcal{P} \Rightarrow p \in \left[0, 1\right]^2{% </tex> %}. Furthermore,
 freedom is left to the designer of the grammar to implement a `draw` method
 alongside the definition of each shape-symbol; this method will receive a final
 set of points representing the shape's position at draw time.
@@ -102,7 +102,7 @@ The dashed line represents the bounding box, the full line represents the shape
 itself. This production is coded by asserting that a certain symbol (e.g. `A`)
 represents a shape (the triangle) and by defining the right hand side as a list
 of `A` symbols whose bounding box values are defined relative to the bounding
-box of the left hand side, mapping them over the {%tex()%} \left[0,1\right]^2 {%end%}
+box of the left hand side, mapping them over the {% <tex> %} \left[0,1\right]^2 {% </tex> %}
 interval.
 
 In code, that would be
@@ -128,4 +128,4 @@ var sierpinski = new ShapeGrammar(
 At each step, an array of symbols + data (the `state`) is evaluated by the
 `run()` function pretty much the same way L-systems are. The result, of which
 you can see an example [here](/thesis/source/10-sierpinski), is a recursive
-computation of the [Sierpinski triangle](http://en.wikipedia.org/wiki/Sierpinski_triangle).
+computation of the [Sierpinski triangle](https://en.wikipedia.org/wiki/Sierpinski_triangle).

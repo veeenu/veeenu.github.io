@@ -6,7 +6,7 @@ aliases = ["/2014/05/09/implementing-skeletal-animation.html"]
 
 Skeletal animation is a technique that allows for fast, efficient animation of 3D models. In this post I'm going to explain the concepts and my implementation for the *GPU matrix palette skinning* algorithm in WebGL. Skeletal animation is quite complex and I struggled to find a guide that explained clearly what was going on, or that didn't waste too much time around language-specifics or code engineering making it quite hard to connect the dots in a simple way, so I hope I can manage to keep it simple enough. 
 <!-- more -->
-The code and the 3D models are [available for download](/data/2014-05-09-implementing-skeletal-animation/veeenu-skeletal-animation.rgz). This time I wrote myself a custom Blender exporter in order to create a cleaner, readable JSON, but the output data layout is quite similar to Three.js's JSON format and with a little work any model can be converted.
+The code and the 3D models are [available for download](/data/2014-05-09-implementing-skeletal-animation/veeenu-skeletal-animation.tgz). This time I wrote myself a custom Blender exporter in order to create a cleaner, readable JSON, but the output data layout is quite similar to Three.js's JSON format and with a little work any model can be converted.
 
 The ugly, low-poly model I designed has been inspired by Final Fantasy VII's "Custom Sweeper" enemy, and the animation I prepared features the poor guy stomping its feet, impatiently waiting for someone actually capable to keyframe a simple walk cycle. This time I'll skip the modeling part and the part related to the boilerplate code to keep it simple; if there's something you don't understand, check out my [previous post](/2014/04/22/implementing-keyframe-animation.html) or feel free to write about it in the comments.
 
@@ -30,7 +30,7 @@ Each joint is connected to zero or more vertices of a mesh in a process called *
 
 To transform a vertex, we need an affine transformation matrix which will tell us how and by how much the vertex is being transformed. This matrix is the result of the sum of all the positions and rotations of all the joints that influence the vertex. So for each vertex V:
 
-{% tex(mode='display') %} V' = \sum_{i=0}^n W_i M_i V {% end %}
+{% <tex> %} V' = \sum_{i=0}^n W_i M_i V {% </tex> %}
 
 Where W<sub>i</sub> is the weight of V against the *i*-th joint, M<sub>i</sub> is the transform matrix of the joint and n the number of joints.
 
@@ -56,20 +56,20 @@ for(bone in bones) {
 }
 ```
 
-This works flawlessly if we make sure no children is evaluated before its parent, as brilliantly explained by [Brandon Jones in this post](http://blog.tojicode.com/2011/10/building-game-part-3-skinning-animation.html); else, we will end up with undefined parent world matrices when evaluating a child and that's not good. Annotation for later: the bone rotations should be expressed as [quaternions](http://en.wikipedia.org/wiki/Quaternion).
+This works flawlessly if we make sure no children is evaluated before its parent, as brilliantly explained by [Brandon Jones in this post](https://blog.tojicode.com/2011/10/building-game-part-3-skinning-animation.html); else, we will end up with undefined parent world matrices when evaluating a child and that's not good. Annotation for later: the bone rotations should be expressed as [quaternions](https://en.wikipedia.org/wiki/Quaternion).
 
 #### Bind pose matrix
 
 Let's consider the resting pose of our model. When the model is totally at rest, no transform is applied to the vertices; this means that the rest configuration of the skeleton should provide the shader a number of identity matrices.
 
-{% tex(mode='display') %}
+{% <tex> %}
 \begin{vmatrix}
   1 & 0 & 0 & 0 \\
   0 & 1 & 0 & 0 \\
   0 & 0 & 1 & 0 \\
   0 & 0 & 0 & 1 \\
 \end{vmatrix}
-{% end %}
+{% </tex> %}
 
 But, recall, we said that each bone is specified by a position and a rotation, and we calculated these in the form of a world matrix which almost certainly won't be the identity - won't these transform our vertices even in the rest pose?
 
@@ -92,21 +92,21 @@ for(bone in bones) {
 
 So let's apply the transformation formula to the vertices in our rest pose (or *bind pose*):
 
-{% tex(mode='display') %}
+{% <tex> %}
 V' = \sum_{i=0}^n W_i M_i^{-1} M_i V
-{% end %}
+{% </tex> %}
 
 becomes
 
-{% tex(mode='display') %}
+{% <tex> %}
 V' = \sum_{i=0}^n W_i I_4 V
-{% end %}
+{% </tex> %}
 
 But we know the W<sub>i</sub>s should add up to 1, so we get
 
-{% tex(mode='display') %}
+{% <tex> %}
 V' = 1 I_4 V = V
-{% end %}
+{% </tex> %}
 
 
 Like we wanted, no transformations applied. We could say the inverse bindpose matrix brings each vertex in *joint space*, allowing then the bone's world transformation to "make sense". In fact, in the rest pose each bone transformation matrix makes sense if it doesn't move a vertex. During the animation it will make sense if it moves the vertex from the bind pose to the desired position.
@@ -115,7 +115,7 @@ Like we wanted, no transformations applied. We could say the inverse bindpose ma
 
 The skeletal animation will now proceed in a way conceptually similar to the keyframe animation I talked about in my [last post](/2014/04/22/implementing-keyframe-animation.html). This time, though, we are working with transformation matrices instead of a large group of vertices. Given a time *t*, we can smoothly interpolate two successive keyframes whose indices correspond to the integer part of *t* and the same number +1, all modulo the number of keyframes, by an amount defined by the fractional part of *t*. For example, if we are at *t* = 7.32 we will interpolate the frame 7 with the frame 8 with a parameter of 0.32.
 
-Interpolation in this case is a bit tricky though, because if you brutally [lerp](http://en.wikipedia.org/wiki/Lerp_%28computing%29) two matrices, glitches and imprecisions will come out. We need two separate interpolations; the first one is the simple linear interpolation between the translation vectors of the two keyframes, the second one is a *spherical* linear interpolation and it is necessary for correctly interpolating a quaternion-based rotation; see [Wikipedia](http://en.wikipedia.org/wiki/Slerp) for more details.
+Interpolation in this case is a bit tricky though, because if you brutally [lerp](https://en.wikipedia.org/wiki/Lerp_%28computing%29) two matrices, glitches and imprecisions will come out. We need two separate interpolations; the first one is the simple linear interpolation between the translation vectors of the two keyframes, the second one is a *spherical* linear interpolation and it is necessary for correctly interpolating a quaternion-based rotation; see [Wikipedia](https://en.wikipedia.org/wiki/Slerp) for more details.
 
 After interpolating the vector and the quaternion, we simply build a matrix out of those two which will be the world matrix for the given bone at the point *t* in time. 
 
